@@ -5,7 +5,7 @@ using System.Windows.Threading;
 
 namespace WpfAsyncPack
 {
-    internal abstract class BaseViewModel : INotifyPropertyChanged
+    public abstract class BaseViewModel : INotifyPropertyChanged
     {
         private readonly Dispatcher _dispatcher = Application.Current.Dispatcher;
 
