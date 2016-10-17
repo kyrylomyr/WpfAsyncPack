@@ -31,6 +31,22 @@ The method ```SetProperty()``` automatically determines during the compilation t
 SetProperty(ref _message, value, nameof(AnotherProperty));
 ```
 
+It is possible also to react on the value change. If the new ```value``` passed to the property setter is different from the current one, the ```SetProperty()``` method returns ```True```, otherwise - ```False```:
+
+```csharp
+public string Message
+{
+    get { return _message; }
+    set
+    {
+        if (SetProperty(ref _message, value))
+        {
+            // The new value was set for the property.
+        }
+    }
+}
+```
+
 ## Async delegate command
 
 ...
