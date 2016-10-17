@@ -11,11 +11,7 @@ namespace WpfAsyncPack
         public NotifyTaskCompletion(Task<TResult> task)
         {
             Task = task;
-
-            if (!task.IsCompleted)
-            {
-                TaskCompletion = WatchTaskAsync(task);
-            }
+            TaskCompletion = WatchTaskAsync(task);
         }
 
         public Task<TResult> Task { get; }
