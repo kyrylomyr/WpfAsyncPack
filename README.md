@@ -26,7 +26,7 @@ internal class MainViewModel : BaseViewModel
 The method ```SetProperty()``` automatically determines during the compilation time the name of property to notify as changed, but you can also pass it explicitly as a third parameter:
 
 ```csharp
-SetProperty(ref _message, value, "AnotherProperty");
+SetProperty(ref _message, value, nameof(AnotherProperty));
 ```
 
 ## Async delegate command
