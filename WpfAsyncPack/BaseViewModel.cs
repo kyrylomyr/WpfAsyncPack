@@ -1,5 +1,7 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 
@@ -28,10 +30,12 @@ namespace WpfAsyncPack
 
         protected virtual async void RaisePropertyChangedAsync([CallerMemberName] string propertyName = null)
         {
-            // Run in UI thread.
-            await _dispatcher.InvokeAsync(
-                () => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)),
-                DispatcherPriority.Normal);
+            await InvokeInUiThreadAsync(() => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)));
+        }
+
+        protected Task InvokeInUiThreadAsync(Action action)
+        {
+            return _dispatcher.InvokeAsync(action, DispatcherPriority.Normal).Task;
         }
     }
 }
