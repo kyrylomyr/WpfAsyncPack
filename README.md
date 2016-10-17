@@ -11,16 +11,22 @@ Class ```BaseViewModel``` contains the features for implementing view models wit
 ### An example of implementing view model
 
 ```csharp
-    internal class MainViewModel : BaseViewModel
-    {
-        private string _message;
+internal class MainViewModel : BaseViewModel
+{
+    private string _message;
 
-        public string Message
-        {
-            get { return _message; }
-            set { SetProperty(ref _message, value); }
-        }
+    public string Message
+    {
+        get { return _message; }
+        set { SetProperty(ref _message, value); }
     }
+}
+```
+
+The method ```SetProperty()``` automatically determines during the compilation time the name of property to notify as changed, but you can also pass it explicitly as a third parameter:
+
+```csharp
+SetProperty(ref _message, value, "AnotherProperty");
 ```
 
 ## Async delegate command
