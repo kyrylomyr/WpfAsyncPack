@@ -23,3 +23,6 @@ Class ```BaseViewModel``` contains the features for implementing view models wit
     }
 ```
 
+## Async delegate command
+
+...
