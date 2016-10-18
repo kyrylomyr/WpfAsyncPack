@@ -7,9 +7,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("WpfAsyncPack")]
 [assembly: AssemblyDescription("An async implementation of delegate command and other base common classes for WPF")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Myroshnychenko Kyrylo")]
+[assembly: AssemblyCompany("Kyrylo Myroshnychenko")]
 [assembly: AssemblyProduct("WpfAsyncPack")]
-[assembly: AssemblyCopyright("Copyright © Myroshnychenko Kyrylo 2016")]
+[assembly: AssemblyCopyright("Copyright © Kyrylo Myroshnychenko 2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
