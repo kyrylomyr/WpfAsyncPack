@@ -4,21 +4,21 @@ using System.Threading.Tasks;
 
 namespace WpfAsyncPack
 {
-    public sealed class NotifyTaskCompletion<TResult> : INotifyPropertyChanged
+    public sealed class NotifyTaskCompletion<T> : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public NotifyTaskCompletion(Task<TResult> task)
+        public NotifyTaskCompletion(Task<T> task)
         {
             Task = task;
             TaskCompletion = WatchTaskAsync(task);
         }
 
-        public Task<TResult> Task { get; }
+        public Task<T> Task { get; }
 
         public Task TaskCompletion { get; }
 
-        public TResult Result => Task.Status == TaskStatus.RanToCompletion ? Task.Result : default(TResult);
+        public T Result => Task.Status == TaskStatus.RanToCompletion ? Task.Result : default(T);
 
         public TaskStatus Status => Task.Status;
 

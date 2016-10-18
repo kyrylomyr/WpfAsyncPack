@@ -7,23 +7,25 @@ using System.Windows.Input;
 
 namespace WpfAsyncPack
 {
-    public class AsyncCommand<TResult> : AsyncCommandBase, INotifyPropertyChanged
+    public class AsyncCommand<T> : AsyncCommandBase, IBindableAsyncCommand<T>, INotifyPropertyChanged
     {
-        private readonly Func<CancellationToken, Task<TResult>> _command;
+        private readonly Func<CancellationToken, Task<T>> _command;
+        private readonly Func<object, bool> _canExecute;
         private readonly CancelAsyncCommand _cancelCommand = new CancelAsyncCommand();
 
-        private NotifyTaskCompletion<TResult> _execution;
+        private NotifyTaskCompletion<T> _execution;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public AsyncCommand(Func<CancellationToken, Task<TResult>> command)
+        public AsyncCommand(Func<CancellationToken, Task<T>> command, Func<object, bool> canExecute = null)
         {
             _command = command;
+            _canExecute = canExecute;
         }
 
         public ICommand CancelCommand => _cancelCommand;
 
-        public NotifyTaskCompletion<TResult> Execution
+        public NotifyTaskCompletion<T> Execution
         {
             get { return _execution; }
             private set
@@ -36,7 +38,7 @@ namespace WpfAsyncPack
         public override async Task ExecuteAsync(object parameter)
         {
             _cancelCommand.NotifyCommandStarting();
-            Execution = new NotifyTaskCompletion<TResult>(_command(_cancelCommand.Token));
+            Execution = new NotifyTaskCompletion<T>(_command(_cancelCommand.Token));
             RaiseCanExecuteChanged();
             await Execution.TaskCompletion;
             _cancelCommand.NotifyCommandFinished();
@@ -45,7 +47,7 @@ namespace WpfAsyncPack
 
         public override bool CanExecute(object parameter)
         {
-            return Execution == null || Execution.IsCompleted;
+            return (Execution == null || Execution.IsCompleted) && (_canExecute == null || _canExecute(parameter));
         }
 
         protected virtual void RaisePropertyChanged([CallerMemberName] string propertyName = null)
@@ -112,9 +114,9 @@ namespace WpfAsyncPack
                        });
         }
 
-        public static AsyncCommand<TResult> Create<TResult>(Func<Task<TResult>> command)
+        public static AsyncCommand<T> Create<T>(Func<Task<T>> command)
         {
-            return new AsyncCommand<TResult>(token => command());
+            return new AsyncCommand<T>(token => command());
         }
 
         public static AsyncCommand<object> Create(Func<CancellationToken, Task> command)
@@ -127,9 +129,41 @@ namespace WpfAsyncPack
                        });
         }
 
-        public static AsyncCommand<TResult> Create<TResult>(Func<CancellationToken, Task<TResult>> command)
+        public static AsyncCommand<T> Create<T>(Func<CancellationToken, Task<T>> command)
         {
-            return new AsyncCommand<TResult>(command);
+            return new AsyncCommand<T>(command);
+        }
+
+        public static AsyncCommand<object> Create(Func<Task> command, Func<object, bool> canExecute)
+        {
+            return new AsyncCommand<object>(
+                       async token =>
+                       {
+                           await command();
+                           return null;
+                       },
+                       canExecute);
+        }
+
+        public static AsyncCommand<T> Create<T>(Func<Task<T>> command, Func<object, bool> canExecute)
+        {
+            return new AsyncCommand<T>(token => command(), canExecute);
+        }
+
+        public static AsyncCommand<object> Create(Func<CancellationToken, Task> command, Func<object, bool> canExecute)
+        {
+            return new AsyncCommand<object>(
+                       async token =>
+                       {
+                           await command(token);
+                           return null;
+                       },
+                       canExecute);
+        }
+
+        public static AsyncCommand<T> Create<T>(Func<CancellationToken, Task<T>> command, Func<object, bool> canExecute)
+        {
+            return new AsyncCommand<T>(command, canExecute);
         }
     }
 }

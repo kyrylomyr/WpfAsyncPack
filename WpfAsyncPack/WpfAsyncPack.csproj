@@ -48,6 +48,7 @@
     <Compile Include="AsyncCommandBase.cs" />
     <Compile Include="BaseViewModel.cs" />
     <Compile Include="IAsyncCommand.cs" />
+    <Compile Include="IBindableAsyncCommand.cs" />
     <Compile Include="NotifyTaskCompletion.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
