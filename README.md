@@ -10,7 +10,9 @@ The idea of ```AsyncCommand``` implementation is based on the [articles](https:/
 
 Th package is available through the NuGet by running the command
 
-```PM> Install-Package WpfAsyncPack```
+```
+PM> Install-Package WpfAsyncPack
+```
 
 # Usage
 
@@ -18,7 +20,7 @@ Th package is available through the NuGet by running the command
 
 Class ```BaseViewModel``` contains the features for implementing view models with the asynchronous handling of ```INotifyPropertyChanged``` event. Every time you set property using the ```BaseViewModel.SetProperty``` method, the code of subscribed handlers will be executed asynchronously in the UI thread through the current application's ```Dispatcher```.
 
-### An example of implementing view model
+An example of the view model implementation:
 
 ```csharp
 internal class MainViewModel : BaseViewModel
