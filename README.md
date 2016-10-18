@@ -25,7 +25,7 @@ internal class MainViewModel : BaseViewModel
 }
 ```
 
-The method ```SetProperty()``` automatically determines during the compilation time the name of property to notify as changed, but you can also pass it explicitly as a third parameter:
+The method ```SetProperty()``` automatically determines during the compilation time the name of property to notify as changed, but you can pass the name explicitly as a third parameter:
 
 ```csharp
 SetProperty(ref _message, value, nameof(AnotherProperty));
@@ -45,6 +45,21 @@ public string Message
         }
     }
 }
+```
+
+The method ```RaisePropertyChangedAsync()``` can be used to notify explicitly about the changes in the certain property:
+
+```csharp
+RaisePropertyChangedAsync(nameof(ChangedProperty));
+RaisePropertyChangedAsync(); // Automatically takes the name of method or property that calls it.
+```
+
+It can be overridden and extended if needed.
+
+If view model contains the logic of updating UI that is called outside (e.g. method passed to the service as action), the code should be wrapped with the call of method ```InvokeInUiThreadAsync()``` to make sure it runs in the UI thread:
+
+```csharp
+await InvokeInUiThreadAsync(() => { /* The code that updates UI */ });
 ```
 
 ## Async delegate command
