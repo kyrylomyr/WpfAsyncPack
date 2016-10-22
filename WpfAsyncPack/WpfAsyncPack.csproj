@@ -28,6 +28,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\WpfAsyncPack.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="PresentationCore" />
@@ -47,6 +48,7 @@
     <Compile Include="AsyncCommand.cs" />
     <Compile Include="BaseViewModel.cs" />
     <Compile Include="IAsyncCommand.cs" />
+    <Compile Include="INotifyTaskCompletion.cs" />
     <Compile Include="NotifyTaskCompletion.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

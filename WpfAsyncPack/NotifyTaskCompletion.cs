@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace WpfAsyncPack
 {
-    public sealed class NotifyTaskCompletion : INotifyPropertyChanged
+    public sealed class NotifyTaskCompletion : INotifyTaskCompletion
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
