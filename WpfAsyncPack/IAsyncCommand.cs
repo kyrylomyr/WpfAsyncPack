@@ -12,6 +12,12 @@ namespace WpfAsyncPack
         /// <param name="parameter">Data used by the command.</param>
         Task ExecuteAsync(object parameter = null);
 
+        /// <summary>
+        /// Gets the detailed information about the command execution completion.
+        /// </summary>
+        /// <value>
+        /// The detailed information about the command execution completion.
+        /// </value>
         INotifyTaskCompletion Execution { get; }
 
         /// <summary>

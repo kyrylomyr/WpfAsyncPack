@@ -4,6 +4,9 @@ using System.Threading.Tasks;
 
 namespace WpfAsyncPack
 {
+    /// <summary>
+    /// Defines the <see cref="Task"/> wrapper that notifies about task execution completion.
+    /// </summary>
     public interface INotifyTaskCompletion : INotifyPropertyChanged
     {
         Task Task { get; }

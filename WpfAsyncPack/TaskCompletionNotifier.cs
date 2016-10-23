@@ -1,14 +1,11 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Threading.Tasks;
 
 namespace WpfAsyncPack
 {
-    public sealed class NotifyTaskCompletion : INotifyTaskCompletion
+    public sealed class TaskCompletionNotifier : PropertyChangeNotifiable, INotifyTaskCompletion
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public NotifyTaskCompletion(Task task)
+        public TaskCompletionNotifier(Task task)
         {
             Task = task;
             TaskCompletion = WatchTaskAsync(task);
@@ -47,30 +44,30 @@ namespace WpfAsyncPack
                 // Skipped because we handle failures below.
             }
 
-            var propertyChanged = PropertyChanged;
-            if (propertyChanged == null)
-            {
-                return;
-            }
-
-            propertyChanged(this, new PropertyChangedEventArgs(nameof(Status)));
-            propertyChanged(this, new PropertyChangedEventArgs(nameof(IsCompleted)));
-            propertyChanged(this, new PropertyChangedEventArgs(nameof(IsNotCompleted)));
+            // ReSharper disable ExplicitCallerInfoArgument
+            RaisePropertyChangedAsync(nameof(Status));
+            RaisePropertyChangedAsync(nameof(IsCompleted));
+            RaisePropertyChangedAsync(nameof(IsNotCompleted));
+            // ReSharper restore ExplicitCallerInfoArgument
 
             if (task.IsCanceled)
             {
-                propertyChanged(this, new PropertyChangedEventArgs(nameof(IsCanceled)));
+                // ReSharper disable once ExplicitCallerInfoArgument
+                RaisePropertyChangedAsync(nameof(IsCanceled));
             }
             else if (task.IsFaulted)
             {
-                propertyChanged(this, new PropertyChangedEventArgs(nameof(IsFaulted)));
-                propertyChanged(this, new PropertyChangedEventArgs(nameof(Exception)));
-                propertyChanged(this, new PropertyChangedEventArgs(nameof(InnerException)));
-                propertyChanged(this, new PropertyChangedEventArgs(nameof(ErrorMessage)));
+                // ReSharper disable ExplicitCallerInfoArgument
+                RaisePropertyChangedAsync(nameof(IsFaulted));
+                RaisePropertyChangedAsync(nameof(Exception));
+                RaisePropertyChangedAsync(nameof(InnerException));
+                RaisePropertyChangedAsync(nameof(ErrorMessage));
+                // ReSharper restore ExplicitCallerInfoArgument
             }
             else
             {
-                propertyChanged(this, new PropertyChangedEventArgs(nameof(IsSuccessfullyCompleted)));
+                // ReSharper disable once ExplicitCallerInfoArgument
+                RaisePropertyChangedAsync(nameof(IsSuccessfullyCompleted));
             }
         }
     }

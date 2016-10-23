@@ -58,6 +58,12 @@ namespace WpfAsyncPack
         /// </value>
         public ICommand CancelCommand => _cancelCommand;
 
+        /// <summary>
+        /// Gets the detailed information about the command execution completion.
+        /// </summary>
+        /// <value>
+        /// The detailed information about the command execution completion.
+        /// </value>
         public INotifyTaskCompletion Execution
         {
             get { return _execution; }
@@ -68,19 +74,23 @@ namespace WpfAsyncPack
             }
         }
 
+        /// <summary>
+        /// Executes the command. Internally the command will be executed asynchronously.
+        /// </summary>
+        /// <param name="parameter">Data used by the command.</param>
         public async void Execute(object parameter = null)
         {
             await ExecuteAsync(parameter);
         }
 
         /// <summary>
-        /// Defines the asynchronous method to be called when the command is invoked.
+        /// Asynchronously executes the command.
         /// </summary>
         /// <param name="parameter">Data used by the command.</param>
         public async Task ExecuteAsync(object parameter = null)
         {
             _cancelCommand.NotifyCommandStarting();
-            Execution = new NotifyTaskCompletion(_command(_cancelCommand.Token));
+            Execution = new TaskCompletionNotifier(_command(_cancelCommand.Token));
             RaiseCanExecuteChanged();
             await Execution.TaskCompletion;
             _cancelCommand.NotifyCommandFinished();
@@ -108,6 +118,9 @@ namespace WpfAsyncPack
             return Execution != null && !Execution.IsCompleted;
         }
 
+        /// <summary>
+        /// Raises the <see cref="CanExecuteChanged"/> event notifying the command state was changed.
+        /// </summary>
         protected void RaiseCanExecuteChanged()
         {
             CommandManager.InvalidateRequerySuggested();
