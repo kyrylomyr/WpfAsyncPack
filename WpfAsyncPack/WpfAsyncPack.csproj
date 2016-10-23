@@ -47,8 +47,11 @@
   <ItemGroup>
     <Compile Include="AsyncCommand.cs" />
     <Compile Include="BaseViewModel.cs" />
+    <Compile Include="Internal\CancelAsyncCommand.cs" />
     <Compile Include="IAsyncCommand.cs" />
     <Compile Include="INotifyTaskCompletion.cs" />
+    <Compile Include="PropertyChangeNotifiable.cs" />
+    <Compile Include="AsyncUiBase.cs" />
     <Compile Include="NotifyTaskCompletion.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

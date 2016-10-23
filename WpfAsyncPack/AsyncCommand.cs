@@ -1,9 +1,9 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using WpfAsyncPack.Internal;
 
 namespace WpfAsyncPack
 {
@@ -12,7 +12,7 @@ namespace WpfAsyncPack
     /// </summary>
     /// <seealso cref="IAsyncCommand" />
     /// <seealso cref="INotifyPropertyChanged" />
-    public class AsyncCommand : IAsyncCommand, INotifyPropertyChanged
+    public class AsyncCommand : PropertyChangeNotifiable, IAsyncCommand
     {
         private readonly Func<CancellationToken, Task> _command;
         private readonly Func<object, bool> _canExecute;
@@ -20,11 +20,6 @@ namespace WpfAsyncPack
         private readonly CancelAsyncCommand _cancelCommand = new CancelAsyncCommand();
 
         private INotifyTaskCompletion _execution;
-
-        /// <summary>
-        /// Occurs when a property value changes.
-        /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
         /// Occurs when changes occur that affect whether or not the command can be executed.
@@ -69,7 +64,7 @@ namespace WpfAsyncPack
             private set
             {
                 _execution = value;
-                RaisePropertyChanged();
+                RaisePropertyChangedAsync();
             }
         }
 
@@ -116,57 +111,6 @@ namespace WpfAsyncPack
         protected void RaiseCanExecuteChanged()
         {
             CommandManager.InvalidateRequerySuggested();
-        }
-
-        protected virtual void RaisePropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        private sealed class CancelAsyncCommand : ICommand
-        {
-            private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
-            private bool _commandExecuting;
-
-            public event EventHandler CanExecuteChanged
-            {
-                add { CommandManager.RequerySuggested += value; }
-                remove { CommandManager.RequerySuggested -= value; }
-            }
-
-            public CancellationToken Token => _cancellationTokenSource.Token;
-
-            void ICommand.Execute(object parameter)
-            {
-                _cancellationTokenSource.Cancel();
-                RaiseCanExecuteChanged();
-            }
-
-            bool ICommand.CanExecute(object parameter)
-            {
-                return _commandExecuting && !_cancellationTokenSource.IsCancellationRequested;
-            }
-
-            public void NotifyCommandStarting()
-            {
-                _commandExecuting = true;
-                if (_cancellationTokenSource.IsCancellationRequested)
-                {
-                    _cancellationTokenSource = new CancellationTokenSource();
-                    RaiseCanExecuteChanged();
-                }
-            }
-
-            public void NotifyCommandFinished()
-            {
-                _commandExecuting = false;
-                RaiseCanExecuteChanged();
-            }
-
-            private static void RaiseCanExecuteChanged()
-            {
-                CommandManager.InvalidateRequerySuggested();
-            }
         }
     }
 }
