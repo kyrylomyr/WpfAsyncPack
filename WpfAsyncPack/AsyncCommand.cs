@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -10,8 +9,6 @@ namespace WpfAsyncPack
     /// <summary>
     /// An asynchronous delegate command that supports cancellation and provides bindable detailed information about execution completion.
     /// </summary>
-    /// <seealso cref="IAsyncCommand" />
-    /// <seealso cref="INotifyPropertyChanged" />
     public class AsyncCommand : PropertyChangeNotifiable, IAsyncCommand
     {
         private readonly Func<CancellationToken, Task> _command;
