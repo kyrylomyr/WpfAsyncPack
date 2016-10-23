@@ -13,11 +13,11 @@ namespace WpfAsyncPack
         private readonly Dispatcher _dispatcher = Application.Current.Dispatcher;
 
         /// <summary>
-        /// Asynchronously executes the method in the UI thread using the current application's <see cref="Dispatcher"/>.
+        /// Asynchronously invokes the method in the UI thread using the current application's <see cref="Dispatcher"/>.
         /// </summary>
-        /// <param name="action">The method to be executed in the UI thread.</param>
+        /// <param name="action">The method to be invoked in the UI thread.</param>
         /// <returns>The task representing the method.</returns>
-        public Task ExecuteInUiThreadAsync(Action action)
+        public Task InvokeInUiThreadAsync(Action action)
         {
             return _dispatcher.InvokeAsync(action, DispatcherPriority.Normal).Task;
         }

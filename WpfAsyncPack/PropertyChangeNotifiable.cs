@@ -22,7 +22,7 @@ namespace WpfAsyncPack
             var propertyChanged = PropertyChanged;
             if (propertyChanged != null)
             {
-                await ExecuteInUiThreadAsync(() => propertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName)));
+                await InvokeInUiThreadAsync(() => propertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName)));
             }
         }
     }
