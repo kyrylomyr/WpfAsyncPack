@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>WpfAsyncPack</id>
+    <title>WpfAsyncPack</title>
+    <version>1.3.0</version>
+    <authors>Kyrylo Myroshnychenko</authors>
+    <owners>Kyrylo Myroshnychenko</owners>
+    <licenseUrl>https://github.com/kirmir/WpfAsyncPack/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/kirmir/WpfAsyncPack</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>An async implementation of delegate command and base view model for WPF.</description>
+    <releaseNotes>Refactored main classes, added async property change notifications into AsyncCommand, provided XML docs for everything.</releaseNotes>
+    <copyright>Copyright 2016</copyright>
+    <tags>wpf async asynchronous asynccommand delegatecommand baseviewmodel</tags>
+  </metadata>
+  <files>
+    <file src="C:\Users\Kyrylo\Desktop\WpfAsyncPack\lib\net46\WpfAsyncPack.dll" target="lib\net46\" />
+    <file src="C:\Users\Kyrylo\Desktop\WpfAsyncPack\lib\net46\WpfAsyncPack.pdb" target="lib\net46\" />
+    <file src="C:\Users\Kyrylo\Desktop\WpfAsyncPack\lib\net46\WpfAsyncPack.xml" target="lib\net46\" />
+  </files>
+</package>
