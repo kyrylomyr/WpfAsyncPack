@@ -62,7 +62,7 @@ namespace WpfAsyncPack
         /// Gets the detailed information about the command execution completion.
         /// </summary>
         /// <value>
-        /// The detailed information about the command execution completion.
+        /// The detailed information about the command execution completion. The value is null until the command is executed.
         /// </value>
         public INotifyTaskCompletion Execution
         {
@@ -101,7 +101,7 @@ namespace WpfAsyncPack
         /// <param name="parameter">
         /// Data used by the command. If the command does not require data to be passed,  this object can be set to <c>null</c>.
         /// </param>
-        /// <returns>Returns <c>true</c> if the command can be executed; otherwise, <c>false</c>.</returns>
+        /// <returns><c>true</c> if the command can be executed; otherwise, <c>false</c>.</returns>
         public bool CanExecute(object parameter)
         {
             return (Execution == null || Execution.IsCompleted) && (_canExecute == null || _canExecute(parameter));
@@ -111,7 +111,7 @@ namespace WpfAsyncPack
         /// Defines the method that determines whether the command is executing or not.
         /// </summary>
         /// <returns>
-        /// Returns <c>true</c> if the command is executing; otherwise, <c>false</c>.
+        ///   <c>true</c> if the command is executing; otherwise, <c>false</c>.
         /// </returns>
         public bool IsExecuting()
         {

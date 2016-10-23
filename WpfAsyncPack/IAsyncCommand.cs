@@ -32,7 +32,7 @@ namespace WpfAsyncPack
         /// Defines the method that determines whether the command is executing or not.
         /// </summary>
         /// <returns>
-        /// Returns <c>true</c> if the command is executing; otherwise, <c>false</c>.
+        /// <c>true</c> if the command is executing; otherwise, <c>false</c>.
         /// </returns>
         bool IsExecuting();
     }

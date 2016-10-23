@@ -17,7 +17,7 @@ namespace WpfAsyncPack
         /// <param name="value">The new value to be set.</param>
         /// <param name="propertyName">The name of the property. It is determined automatically on the compilation time if not set.</param>
         /// <returns>
-        /// The <c>true</c>, if the new value is different from the current one and it was changed; otherwise, <c>false</c>.
+        /// <c>true</c>, if the new value is different from the current one and it was changed; otherwise, <c>false</c>.
         /// </returns>
         protected bool SetProperty<T>(ref T storage, T value, [CallerMemberName] string propertyName = null)
         {
