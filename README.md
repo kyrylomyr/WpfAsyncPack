@@ -74,4 +74,54 @@ await InvokeInUiThreadAsync(() => { /* The code that updates UI */ });
 
 ## Async delegate command
 
-...
+Class ```AsyncCommand``` is an implementation of asynchronous delegate command with handy bindabale properties.
+
+### Creating
+
+The following example demonstrates how to create a command:
+
+```csharp
+IAsyncCommand UpdateWeatherCommand = new AsyncCommand(
+    async () =>
+    {
+        // Call async method of the external service.
+        var weather = await SeatherService.GetCurrentWeatherAsync();
+
+        // Update property bound to the UI control.
+        Temperature = weather.Temperature;
+        Wind = weather.Wind;
+    },
+    // Optinally it is possible to set a condition when the command can be executed.
+    // In the example: forbid execution until loading of cities is completed.
+    parameter => !LoadCitiesCommand.IsExecuting());
+```
+
+It is also possible to pass the method that accepts a cancellation token:
+
+```csharp
+IAsyncCommand UpdateWeatherCommand = new AsyncCommand(
+    async (token) =>
+    {
+        // ...
+    });
+```
+
+### Binding
+
+The command can be bound to the UI (e.g. Button control) as usual delegate command. Additionally, the ```Execution``` property can be bound to extend the reaction of UI to the command execution process. It is ```null``` before the first execution, and after it contains the execution details.
+
+The following example demonstrates how to hide some control while command is executing:
+
+```xaml
+Visibility="{Binding MyCommand.Execution.IsNotCompleted, Converter={StaticResource BoolToVisibilityConverter}}"
+```
+
+The ```Execution``` can be used to get to know is command completed ot not, was it cancelled or failed, the failure exception and its message. All properties can be bound to UI.
+
+Also ```AsyncCommand``` has a property ```CancelCommand``` - a special ready for binding command that cancels the execution. In order to use it, the command should be created with the method that accepts a cancellation token.
+
+### Usage in the view model code
+
+All properties of the ```AsyncCommand```, of course, can be used in the code of the view model. Note, that command doesn't support returning result, because the main usage of it is binding to the UI. But it can be executed from code and contains two methods for this, ```Execute``` and ```ExecuteAsync```, synchronous and asynchronous versions respectively.
+
+Additional method ```IsExecuting``` can be used to check the command state (e.g. in the other command predicate like in the example above). It takes into account that ```Execution``` can be ```null```, so no need to check it.
