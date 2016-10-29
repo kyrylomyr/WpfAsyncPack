@@ -124,4 +124,4 @@ Also ```AsyncCommand``` has a property ```CancelCommand``` - a special ready for
 
 All properties of the ```AsyncCommand```, of course, can be used in the code of the view model. Note, that command doesn't support returning result, because the main usage of it is binding to the UI. But it can be executed from code and contains two methods for this, ```Execute``` and ```ExecuteAsync```, synchronous and asynchronous versions respectively.
 
-Additional method ```IsExecuting``` can be used to check the command state (e.g. in the other command predicate like in the example above). It takes into account that ```Execution``` can be ```null```, so no need to check it.
+Additional method ```IsExecuting()``` can be used to check the command state (e.g. in the other command predicate like in the example above). It takes into account that ```Execution``` can be ```null```, so no need to check it.
