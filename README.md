@@ -96,7 +96,8 @@ IAsyncCommand UpdateWeatherCommand = new AsyncCommand(
     parameter => !LoadCitiesCommand.IsExecuting());
 ```
 
-It is also possible to pass the method that accepts a cancellation token:
+There are several constructor overloads to create the command that accepts a parameter and/or cancellation token or not.
+For example, the command with cancellation token:
 
 ```csharp
 IAsyncCommand UpdateWeatherCommand = new AsyncCommand(
