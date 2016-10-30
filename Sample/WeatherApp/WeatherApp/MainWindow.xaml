@@ -1,0 +1,57 @@
+﻿<Window x:Class="WeatherApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:app="clr-namespace:WeatherApp"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        Title="WeatherApp (sample of usage WpfAsyncPack)"
+        Width="525"
+        Height="350"
+        d:DataContext="{d:DesignInstance app:MainViewModel}"
+        Loaded="MainWindow_OnLoaded"
+        mc:Ignorable="d">
+  <Window.Resources>
+    <BooleanToVisibilityConverter x:Key="BoolToVisConv" />
+    <Style TargetType="TextBlock">
+      <Setter Property="Margin" Value="10,0" />
+    </Style>
+  </Window.Resources>
+  <Grid Margin="0,10">
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="Auto" />
+      <ColumnDefinition Width="*" />
+    </Grid.ColumnDefinitions>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+    </Grid.RowDefinitions>
+    <TextBlock Grid.Row="0"
+               Grid.Column="0"
+               Grid.ColumnSpan="2"
+               Visibility="{Binding InitCommand.Execution.IsNotCompleted,
+                                    Converter={StaticResource BoolToVisConv}}">
+      Initialization...
+    </TextBlock>
+    <TextBlock Grid.Row="1" Grid.Column="0">Temperature:</TextBlock>
+    <TextBlock Grid.Row="1"
+               Grid.Column="1"
+               Text="{Binding Temperature}" />
+    <TextBlock Grid.Row="2" Grid.Column="0">Wind:</TextBlock>
+    <TextBlock Grid.Row="2"
+               Grid.Column="1"
+               Text="{Binding Wind}" />
+    <TextBlock Grid.Row="3" Grid.Column="0">Condition:</TextBlock>
+    <TextBlock Grid.Row="3"
+               Grid.Column="1"
+               Text="{Binding Condition}" />
+    <Button Grid.Row="4"
+            Grid.Column="1"
+            HorizontalAlignment="Left"
+            Command="{Binding GetWeatherCommand}">
+      Update weather
+    </Button>
+  </Grid>
+</Window>
