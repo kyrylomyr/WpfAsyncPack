@@ -4,7 +4,7 @@ using WpfAsyncPack;
 
 namespace WeatherApp
 {
-    internal class MainViewModel :BaseViewModel
+    internal class MainViewModel : BaseViewModel
     {
         private readonly WeatherService _service;
         private int _temperature;
@@ -26,7 +26,7 @@ namespace WeatherApp
                 async () =>
                 {
                     // Call of the long-running external service.
-                    var weather = await _service.GetCurrentWeatherAsync();
+                    var weather = await _service.GetWeatherAsync();
 
                     // Set the view model properties to display the result.
                     Temperature = weather.Temperature;
