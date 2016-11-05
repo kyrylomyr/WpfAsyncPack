@@ -9,7 +9,7 @@ namespace WpfAsyncPack
     /// <summary>
     /// An asynchronous delegate command that supports cancellation and provides bindable detailed information about execution completion.
     /// </summary>
-    public class AsyncCommand : PropertyChangeNotifiable, IAsyncCommand
+    public class AsyncCommand : AsyncBindableBase, IAsyncCommand
     {
         private readonly Func<object, CancellationToken, Task> _command;
         private readonly Func<object, bool> _canExecute;
@@ -26,6 +26,8 @@ namespace WpfAsyncPack
             add { CommandManager.RequerySuggested += value; }
             remove { CommandManager.RequerySuggested -= value; }
         }
+
+        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AsyncCommand"/> class.
@@ -67,6 +69,8 @@ namespace WpfAsyncPack
             : this((param, token) => command(), canExecute)
         {
         }
+
+        #endregion
 
         /// <summary>
         /// Defines the command that cancels execution of the <see cref="ExecuteAsync"/> method.

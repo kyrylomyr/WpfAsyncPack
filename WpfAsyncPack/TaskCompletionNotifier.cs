@@ -6,7 +6,7 @@ namespace WpfAsyncPack
     /// <summary>
     /// Watches the task and notifies about its execution completion.
     /// </summary>
-    public sealed class TaskCompletionNotifier : PropertyChangeNotifiable, INotifyTaskCompletion
+    public sealed class TaskCompletionNotifier : AsyncBindableBase, INotifyTaskCompletion
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TaskCompletionNotifier"/> class.

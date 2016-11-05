@@ -1,17 +1,33 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Threading;
 
 namespace WpfAsyncPack
 {
     /// <summary>
-    /// Represents the base for the class that can notifies about changes in its properties.
+    /// Provides asynchronous features to simplify implementation of classes bindable to the UI.
     /// </summary>
-    public abstract class PropertyChangeNotifiable : AsyncUiBase, INotifyPropertyChanged
+    public abstract class AsyncBindableBase : INotifyPropertyChanged
     {
+        private readonly Dispatcher _dispatcher = Application.Current.Dispatcher;
+
         /// <summary>
         /// Occurs when a property value changes.
         /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
+
+        /// <summary>
+        /// Asynchronously invokes the method in the UI thread using the current application's <see cref="Dispatcher"/>.
+        /// </summary>
+        /// <param name="action">The method to be invoked in the UI thread.</param>
+        /// <returns>The task representing the method.</returns>
+        public Task InvokeInUiThreadAsync(Action action)
+        {
+            return _dispatcher.InvokeAsync(action, DispatcherPriority.Normal).Task;
+        }
 
         /// <summary>
         /// Raises the <see cref="PropertyChanged"/> event that way so the subscribers are asynchronously invoked in the UI thread.

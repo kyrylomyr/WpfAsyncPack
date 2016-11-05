@@ -6,7 +6,7 @@ namespace WpfAsyncPack
     /// <summary>
     /// Provides the base infrastructure for the view models such as asynchronous notification about property value changes.
     /// </summary>
-    public abstract class BaseViewModel : PropertyChangeNotifiable
+    public abstract class BaseViewModel : AsyncBindableBase
     {
         /// <summary>
         /// Sets the new property value and asynchronously notifies about the change. If the new value is equal to the current one, the
