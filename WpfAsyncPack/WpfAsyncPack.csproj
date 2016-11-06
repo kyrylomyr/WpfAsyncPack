@@ -48,6 +48,7 @@
     <Compile Include="Base\ObservableTask.cs" />
     <Compile Include="Command\AsyncCommand.cs" />
     <Compile Include="Base\AsyncBindableBase.cs" />
+    <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Internal\CancelAsyncCommand.cs" />
     <Compile Include="Command\IAsyncCommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
