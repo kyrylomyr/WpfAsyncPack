@@ -5,22 +5,30 @@ namespace WeatherApp
 {
     internal class WeatherService
     {
-        private static readonly Random Rand = new Random();
-        private static readonly string[] Conditions = {"Cloudy", "Sunshine", "Overcast", "Rain"};
+        private static readonly Random _rand = new Random();
+        private static readonly string[] _conditions = { "Cloudy", "Sunshine", "Overcast", "Rain" };
 
-        public async Task<WeatherModel> GetWeatherAsync()
+        public async Task<WeatherModel> GetWeatherAsync(IProgress<int> progress)
         {
+            progress.Report(0);
+
             // Simulate long-running data retrieving.
-            var temperature = await Task.FromResult(Rand.Next(-20, 50));
+            var temperature = await Task.FromResult(_rand.Next(-20, 50));
             await Task.Delay(new TimeSpan(0, 0, 5));
 
-            var wind = await Task.FromResult(Rand.Next(0, 10));
+            progress.Report(1);
+
+            var wind = await Task.FromResult(_rand.Next(0, 10));
             await Task.Delay(new TimeSpan(0, 0, 5));
 
-            var condition = await Task.FromResult(Conditions[Rand.Next(0, Conditions.Length - 1)]);
+            progress.Report(2);
+
+            var condition = await Task.FromResult(_conditions[_rand.Next(0, _conditions.Length - 1)]);
             await Task.Delay(new TimeSpan(0, 0, 5));
 
-            return new WeatherModel {Temperature = temperature, Wind = wind, Condition = condition};
+            progress.Report(3);
+
+            return new WeatherModel { Temperature = temperature, Wind = wind, Condition = condition };
         }
     }
 }
