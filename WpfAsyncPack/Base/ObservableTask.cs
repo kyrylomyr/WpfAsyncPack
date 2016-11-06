@@ -125,7 +125,7 @@ namespace WpfAsyncPack.Base
             }
             catch
             {
-                // Skipped because we handle failures below.
+                // Skipped because we handle failures in bindable properties.
             }
 
             NotifyAllPropertiesChanged();
