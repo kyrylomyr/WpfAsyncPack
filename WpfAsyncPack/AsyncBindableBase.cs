@@ -20,16 +20,6 @@ namespace WpfAsyncPack
         public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
-        /// Asynchronously invokes the method in the UI thread using the current application's <see cref="Dispatcher"/>.
-        /// </summary>
-        /// <param name="action">The method to be invoked in the UI thread.</param>
-        /// <returns>The task representing the method.</returns>
-        public Task InvokeInUiThreadAsync(Action action)
-        {
-            return _dispatcher.InvokeAsync(action, DispatcherPriority.Normal).Task;
-        }
-
-        /// <summary>
         /// Raises the <see cref="PropertyChanged"/> event that way so the subscribers are asynchronously invoked in the UI thread.
         /// </summary>
         /// <param name="propertyName">The name of the property. It is determined automatically on the compilation time if not set.</param>
@@ -40,6 +30,16 @@ namespace WpfAsyncPack
             {
                 await InvokeInUiThreadAsync(() => propertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName)));
             }
+        }
+
+        /// <summary>
+        /// Asynchronously invokes the method in the UI thread using the current application's <see cref="Dispatcher"/>.
+        /// </summary>
+        /// <param name="action">The method to be invoked in the UI thread.</param>
+        /// <returns>The task representing the method.</returns>
+        protected Task InvokeInUiThreadAsync(Action action)
+        {
+            return _dispatcher.InvokeAsync(action, DispatcherPriority.Normal).Task;
         }
     }
 }
