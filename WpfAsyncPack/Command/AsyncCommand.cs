@@ -2,9 +2,10 @@
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using WpfAsyncPack.Base;
 using WpfAsyncPack.Internal;
 
-namespace WpfAsyncPack
+namespace WpfAsyncPack.Command
 {
     /// <summary>
     /// An asynchronous delegate command that supports cancellation and provides bindable detailed information about execution completion.
@@ -13,10 +14,7 @@ namespace WpfAsyncPack
     {
         private readonly Func<object, CancellationToken, Task> _command;
         private readonly Func<object, bool> _canExecute;
-
         private readonly CancelAsyncCommand _cancelCommand = new CancelAsyncCommand();
-
-        private INotifyTaskCompletion _execution;
 
         /// <summary>
         /// Occurs when changes occur that affect whether or not the command can be executed.
@@ -73,28 +71,20 @@ namespace WpfAsyncPack
         #endregion
 
         /// <summary>
+        /// Gets the detailed information about the command task status and completion.
+        /// </summary>
+        /// <value>
+        /// The detailed information about the command task status and completion.
+        /// </value>
+        public ObservableTask Task { get; } = new ObservableTask();
+
+        /// <summary>
         /// Defines the command that cancels execution of the <see cref="ExecuteAsync"/> method.
         /// </summary>
         /// <value>
         /// The cancellation command.
         /// </value>
         public ICommand CancelCommand => _cancelCommand;
-
-        /// <summary>
-        /// Gets the detailed information about the command execution completion.
-        /// </summary>
-        /// <value>
-        /// The detailed information about the command execution completion. The value is null until the command is executed.
-        /// </value>
-        public INotifyTaskCompletion Execution
-        {
-            get { return _execution; }
-            private set
-            {
-                _execution = value;
-                RaisePropertyChangedAsync();
-            }
-        }
 
         /// <summary>
         /// Executes the command. Internally the command will be executed asynchronously.
@@ -112,32 +102,21 @@ namespace WpfAsyncPack
         public async Task ExecuteAsync(object parameter = null)
         {
             _cancelCommand.NotifyCommandStarting();
-            Execution = new TaskCompletionNotifier(_command(parameter, _cancelCommand.Token));
+            var task = Task.Observe(_command(parameter, _cancelCommand.Token));
             RaiseCanExecuteChanged();
-            await Execution.TaskCompletion;
+            await task;
             _cancelCommand.NotifyCommandFinished();
             RaiseCanExecuteChanged();
         }
 
         /// <summary>The method that determines whether the command can be executed in its current state or not.</summary>
         /// <param name="parameter">
-        /// Data used by the command. If the command does not require data to be passed,  this object can be set to <c>null</c>.
+        /// Data used by the command. If the command does not require data to be passed, this object can be set to <c>null</c>.
         /// </param>
         /// <returns><c>true</c> if the command can be executed; otherwise, <c>false</c>.</returns>
         public bool CanExecute(object parameter)
         {
-            return (Execution == null || Execution.IsCompleted) && (_canExecute == null || _canExecute(parameter));
-        }
-
-        /// <summary>
-        /// Defines the method that determines whether the command is executing or not.
-        /// </summary>
-        /// <returns>
-        ///   <c>true</c> if the command is executing; otherwise, <c>false</c>.
-        /// </returns>
-        public bool IsExecuting()
-        {
-            return Execution != null && !Execution.IsCompleted;
+            return Task.IsNotRunning && (_canExecute == null || _canExecute(parameter));
         }
 
         /// <summary>

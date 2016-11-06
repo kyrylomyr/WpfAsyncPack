@@ -7,7 +7,7 @@ namespace WpfAsyncPack.Internal
     internal sealed class CancelAsyncCommand : ICommand
     {
         private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
-        private bool _commandExecuting;
+        private bool _isCommandExecuting;
 
         public event EventHandler CanExecuteChanged
         {
@@ -25,12 +25,12 @@ namespace WpfAsyncPack.Internal
 
         bool ICommand.CanExecute(object parameter)
         {
-            return _commandExecuting && !_cancellationTokenSource.IsCancellationRequested;
+            return _isCommandExecuting && !_cancellationTokenSource.IsCancellationRequested;
         }
 
         public void NotifyCommandStarting()
         {
-            _commandExecuting = true;
+            _isCommandExecuting = true;
             if (_cancellationTokenSource.IsCancellationRequested)
             {
                 _cancellationTokenSource = new CancellationTokenSource();
@@ -40,7 +40,7 @@ namespace WpfAsyncPack.Internal
 
         public void NotifyCommandFinished()
         {
-            _commandExecuting = false;
+            _isCommandExecuting = false;
             RaiseCanExecuteChanged();
         }
 

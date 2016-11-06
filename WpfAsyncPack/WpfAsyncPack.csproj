@@ -45,15 +45,14 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AsyncCommand.cs" />
-    <Compile Include="AsyncBindableBase.cs" />
-    <Compile Include="BaseViewModel.cs" />
+    <Compile Include="Base\ObservableTask.cs" />
+    <Compile Include="Command\AsyncCommand.cs" />
+    <Compile Include="Base\AsyncBindableBase.cs" />
     <Compile Include="Internal\CancelAsyncCommand.cs" />
-    <Compile Include="IAsyncCommand.cs" />
-    <Compile Include="INotifyTaskCompletion.cs" />
-    <Compile Include="TaskCompletionNotifier.cs" />
+    <Compile Include="Command\IAsyncCommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -1,7 +1,8 @@
 ﻿using System.Threading.Tasks;
 using System.Windows.Input;
+using WpfAsyncPack.Base;
 
-namespace WpfAsyncPack
+namespace WpfAsyncPack.Command
 {
     /// <summary>
     /// Defines an asynchronous command that supports cancellation and provides detailed information about execution completion.
@@ -13,12 +14,12 @@ namespace WpfAsyncPack
         Task ExecuteAsync(object parameter = null);
 
         /// <summary>
-        /// Gets the detailed information about the command execution completion.
+        /// Gets the detailed information about the command task status and completion.
         /// </summary>
         /// <value>
-        /// The detailed information about the command execution completion.
+        /// The detailed information about the command task status and completion.
         /// </value>
-        INotifyTaskCompletion Execution { get; }
+        ObservableTask Task { get; }
 
         /// <summary>
         /// Defines the command that cancels execution of the <see cref="ExecuteAsync"/> method.
@@ -27,13 +28,5 @@ namespace WpfAsyncPack
         /// The cancellation command.
         /// </value>
         ICommand CancelCommand { get; }
-
-        /// <summary>
-        /// Defines the method that determines whether the command is executing or not.
-        /// </summary>
-        /// <returns>
-        /// <c>true</c> if the command is executing; otherwise, <c>false</c>.
-        /// </returns>
-        bool IsExecuting();
     }
 }

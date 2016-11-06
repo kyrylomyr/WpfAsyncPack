@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
-using WpfAsyncPack;
+using WpfAsyncPack.Base;
+using WpfAsyncPack.Command;
 
 namespace WeatherApp
 {
-    internal class MainViewModel : BaseViewModel
+    internal class MainViewModel : AsyncBindableBase
     {
         private readonly WeatherService _service;
         private int _temperature;
@@ -33,7 +34,7 @@ namespace WeatherApp
                     Wind = weather.Wind;
                     Condition = weather.Condition;
                 },
-                _ => !InitCommand.IsExecuting());
+                _ => InitCommand.Task.IsNotRunning);
         }
 
         public MainViewModel() : this(new WeatherService())
