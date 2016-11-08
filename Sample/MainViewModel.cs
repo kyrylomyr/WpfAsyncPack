@@ -8,7 +8,6 @@ namespace WeatherApp
     internal class MainViewModel : AsyncBindableBase
     {
         private readonly WeatherService _service;
-        private readonly Progress<int> _progress;
 
         private int _temperature;
         private int _wind;
@@ -19,8 +18,6 @@ namespace WeatherApp
         {
             _service = service;
 
-            _progress = new Progress<int>(x => { UpdateWeatherProgress = x; });
-
             InitCommand = new AsyncCommand(
                               async () =>
                               {
@@ -28,16 +25,20 @@ namespace WeatherApp
                                   await Task.Delay(new TimeSpan(0, 0, 10));
                               });
 
-            GetWeatherCommand = new AsyncCommand(
-                                    async () =>
+            GetWeatherCommand = new ProgressiveAsyncCommand<int>(
+                                    async progress =>
                                     {
                                         // Call of the long-running external service.
-                                        var weather = await _service.GetWeatherAsync(_progress);
+                                        var weather = await _service.GetWeatherAsync(progress);
 
                                         // Set the view model properties to display the result.
                                         Temperature = weather.Temperature;
                                         Wind = weather.Wind;
                                         Condition = weather.Condition;
+                                    },
+                                    progressValue =>
+                                    {
+                                        UpdateWeatherProgress = progressValue;
                                     },
                                     _ => InitCommand.Task.IsNotRunning);
         }
