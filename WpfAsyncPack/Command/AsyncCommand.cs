@@ -41,16 +41,6 @@ namespace WpfAsyncPack.Command
         /// <summary>
         /// Initializes a new instance of the <see cref="AsyncCommand"/> class.
         /// </summary>
-        /// <param name="command">The asynchronous method that supports cancellation.</param>
-        /// <param name="canExecute">The method that determines whether the command can be executed in its current state or not.</param>
-        public AsyncCommand(Func<CancellationToken, Task> command, Func<object, bool> canExecute = null)
-            : this((param, token) => command(token), canExecute)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AsyncCommand"/> class.
-        /// </summary>
         /// <param name="command">The asynchronous method that accepts parameter.</param>
         /// <param name="canExecute">The method that determines whether the command can be executed in its current state or not.</param>
         public AsyncCommand(Func<object, Task> command, Func<object, bool> canExecute = null)
