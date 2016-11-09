@@ -12,8 +12,8 @@ namespace WpfAsyncPack.Command
     /// </summary>
     public class AsyncCommand : AsyncBindableBase, IAsyncCommand
     {
-        private readonly Func<object, CancellationToken, Task> _command;
-        private readonly Func<object, bool> _canExecute;
+        protected Func<object, CancellationToken, Task> CommandFunc;
+        protected Func<object, bool> CanExecuteFunc;
 
         private readonly CancelAsyncCommand _cancelCommand = new CancelAsyncCommand();
 
@@ -35,8 +35,8 @@ namespace WpfAsyncPack.Command
             Func<object, CancellationToken, Task> command,
             Func<object, bool> canExecute = null)
         {
-            _command = command;
-            _canExecute = canExecute;
+            CommandFunc = command;
+            CanExecuteFunc = canExecute;
         }
 
         /// <summary>
@@ -60,6 +60,10 @@ namespace WpfAsyncPack.Command
             Func<Task> command,
             Func<object, bool> canExecute = null)
             : this((param, token) => command(), canExecute)
+        {
+        }
+
+        protected AsyncCommand()
         {
         }
 
@@ -95,7 +99,7 @@ namespace WpfAsyncPack.Command
         public async Task ExecuteAsync(object parameter = null)
         {
             _cancelCommand.NotifyCommandStarting();
-            var task = Task.Observe(ExecuteCommand(parameter, _cancelCommand.Token));
+            var task = Task.Observe(CommandFunc(parameter, _cancelCommand.Token));
             RaiseCanExecuteChanged();
             await task;
             _cancelCommand.NotifyCommandFinished();
@@ -109,23 +113,10 @@ namespace WpfAsyncPack.Command
         /// <returns><c>true</c> if the command can be executed; otherwise, <c>false</c>.</returns>
         public bool CanExecute(object parameter)
         {
-            return Task.IsNotRunning && CanExecuteCommand(parameter);
+            return Task.IsNotRunning && (CanExecuteFunc == null || CanExecuteFunc(parameter));
         }
 
-        protected virtual Task ExecuteCommand(object parameter, CancellationToken cancellationToken)
-        {
-            return _command(parameter, cancellationToken);
-        }
-
-        protected virtual bool CanExecuteCommand(object parameter)
-        {
-            return _canExecute == null || _canExecute(parameter);
-        }
-
-        /// <summary>
-        /// Raises the <see cref="CanExecuteChanged"/> event notifying the command state was changed.
-        /// </summary>
-        protected void RaiseCanExecuteChanged()
+        private static void RaiseCanExecuteChanged()
         {
             CommandManager.InvalidateRequerySuggested();
         }
