@@ -12,7 +12,14 @@ namespace WpfAsyncPack.Command
     /// </summary>
     public class AsyncCommand : AsyncBindableBase, IAsyncCommand
     {
-        protected Func<object, CancellationToken, Task> CommandFunc;
+        /// <summary>
+        /// The function executed by the command.
+        /// </summary>
+        protected Func<object, CancellationToken, Task> ExecuteFunc;
+
+        /// <summary>
+        /// The function that determines if command can be executed.
+        /// </summary>
         protected Func<object, bool> CanExecuteFunc;
 
         private readonly CancelAsyncCommand _cancelCommand = new CancelAsyncCommand();
@@ -29,40 +36,44 @@ namespace WpfAsyncPack.Command
         /// <summary>
         /// Initializes a new instance of the <see cref="AsyncCommand"/> class.
         /// </summary>
-        /// <param name="command">The asynchronous method that accepts parameter and supports cancellation.</param>
+        /// <param name="execute">The asynchronous method that accepts parameter and supports cancellation.</param>
         /// <param name="canExecute">The method that determines whether the command can be executed in its current state or not.</param>
         public AsyncCommand(
-            Func<object, CancellationToken, Task> command,
+            Func<object, CancellationToken, Task> execute,
             Func<object, bool> canExecute = null)
         {
-            CommandFunc = command;
+            ExecuteFunc = execute;
             CanExecuteFunc = canExecute;
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AsyncCommand"/> class.
         /// </summary>
-        /// <param name="command">The asynchronous method that accepts parameter.</param>
+        /// <param name="execute">The asynchronous method that accepts parameter.</param>
         /// <param name="canExecute">The method that determines whether the command can be executed in its current state or not.</param>
         public AsyncCommand(
-            Func<object, Task> command,
+            Func<object, Task> execute,
             Func<object, bool> canExecute = null)
-            : this((param, token) => command(param), canExecute)
+            : this((param, token) => execute(param), canExecute)
         {
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AsyncCommand"/> class.
         /// </summary>
-        /// <param name="command">The asynchronous method.</param>
+        /// <param name="execute">The asynchronous method.</param>
         /// <param name="canExecute">The method that determines whether the command can be executed in its current state or not.</param>
         public AsyncCommand(
-            Func<Task> command,
+            Func<Task> execute,
             Func<object, bool> canExecute = null)
-            : this((param, token) => command(), canExecute)
+            : this((param, token) => execute(), canExecute)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AsyncCommand"/> class. This constructor doesn't set the <see cref="ExecuteFunc"/>
+        /// and <see cref="CanExecuteFunc"/> functions. They should be set manually in the derived class before the command is executed.
+        /// </summary>
         protected AsyncCommand()
         {
         }
@@ -84,7 +95,7 @@ namespace WpfAsyncPack.Command
         public ICommand CancelCommand => _cancelCommand;
 
         /// <summary>
-        /// Executes the command. Internally the command will be executed asynchronously.
+        /// Executes the command. Internally the execute will be executed asynchronously.
         /// </summary>
         /// <param name="parameter">Data used by the command.</param>
         public async void Execute(object parameter = null)
@@ -99,7 +110,7 @@ namespace WpfAsyncPack.Command
         public async Task ExecuteAsync(object parameter = null)
         {
             _cancelCommand.NotifyCommandStarting();
-            var task = Task.Observe(CommandFunc(parameter, _cancelCommand.Token));
+            var task = Task.Observe(ExecuteFunc(parameter, _cancelCommand.Token));
             RaiseCanExecuteChanged();
             await task;
             _cancelCommand.NotifyCommandFinished();
@@ -108,7 +119,7 @@ namespace WpfAsyncPack.Command
 
         /// <summary>The method that determines whether the command can be executed in its current state or not.</summary>
         /// <param name="parameter">
-        /// Data used by the command. If the command does not require data to be passed, this object can be set to <c>null</c>.
+        /// Data used by the command. If the execute does not require data to be passed, this object can be set to <c>null</c>.
         /// </param>
         /// <returns><c>true</c> if the command can be executed; otherwise, <c>false</c>.</returns>
         public bool CanExecute(object parameter)
