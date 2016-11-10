@@ -15,8 +15,8 @@
     <tags>wpf async asynchronous asynccommand delegatecommand baseviewmodel progress</tags>
   </metadata>
   <files>
-    <file src="\WpfAsyncPack\lib\net46\WpfAsyncPack.dll" target="lib\net46\" />
-    <file src="\WpfAsyncPack\lib\net46\WpfAsyncPack.pdb" target="lib\net46\" />
-    <file src="\WpfAsyncPack\lib\net46\WpfAsyncPack.xml" target="lib\net46\" />
+    <file src="\lib\net46\WpfAsyncPack.dll" target="lib\net46\" />
+    <file src="\lib\net46\WpfAsyncPack.pdb" target="lib\net46\" />
+    <file src="\lib\net46\WpfAsyncPack.xml" target="lib\net46\" />
   </files>
 </package>
