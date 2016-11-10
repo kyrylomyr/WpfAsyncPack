@@ -1,0 +1,355 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>WpfAsyncPack</name>
+    </assembly>
+    <members>
+        <member name="T:WpfAsyncPack.Base.ObservableTask">
+            <summary>
+            Observes the task and notifies about status changes and completion result.
+            </summary>
+        </member>
+        <member name="P:WpfAsyncPack.Base.ObservableTask.Task">
+            <summary>
+            Gets the task that is observed.
+            </summary>
+            <value>
+            The task that is observed.
+            </value>
+        </member>
+        <member name="P:WpfAsyncPack.Base.ObservableTask.IsRunning">
+            <summary>
+            Gets a value indicating whether the task is running.
+            </summary>
+            <value>
+            <c>true</c> if the task is running; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:WpfAsyncPack.Base.ObservableTask.IsNotRunning">
+            <summary>
+            Gets a value indicating whether the task is not running. The value is opposite to the value of <see cref="P:WpfAsyncPack.Base.ObservableTask.IsRunning"/>.
+            </summary>
+            <value>
+            <c>true</c> if the task is not running; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:WpfAsyncPack.Base.ObservableTask.IsCompleted">
+            <summary>
+            Gets a value indicating whether the task has been completed. Task is completed even if it is faulted.
+            </summary>
+            <value>
+            <c>true</c> if the task has been completed; <c>false</c> if the task has not been completed or observed yet.
+            </value>
+        </member>
+        <member name="P:WpfAsyncPack.Base.ObservableTask.IsNotCompleted">
+            <summary>
+            Gets a value indicating whether the task has not been completed. The value is opposite to the value of <see cref="P:WpfAsyncPack.Base.ObservableTask.IsCompleted"/>.
+            </summary>
+            <value>
+            <c>true</c> if the task has not been completed or observed yet; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:WpfAsyncPack.Base.ObservableTask.IsCanceled">
+            <summary>
+            Gets a value indicating whether the task has been cancelled.
+            </summary>
+            <value>
+            <c>true</c> if the task has been cancelled; <c>false</c> if the task has not been cancelled or observed yet.
+            </value>
+        </member>
+        <member name="P:WpfAsyncPack.Base.ObservableTask.IsNotCanceled">
+            <summary>
+            Gets a value indicating whether the task has not been cancelled. The value is opposite to the value of <see cref="P:WpfAsyncPack.Base.ObservableTask.IsCanceled"/>.
+            </summary>
+            <value>
+            <c>true</c> if the task has not been cancelled or observed yet; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:WpfAsyncPack.Base.ObservableTask.IsSuccessfullyCompleted">
+            <summary>
+            Gets a value indicating whether the task has been completed successfully without exceptions.
+            </summary>
+            <value>
+            <c>true</c> if the task has been completed successfully; <c>false</c> if the task has been completed with an exception,
+            or has not been observed yet.
+            </value>
+        </member>
+        <member name="P:WpfAsyncPack.Base.ObservableTask.IsFaulted">
+            <summary>
+            Gets a value indicating whether the task has been completed with a failure. The failure details are contained in the
+            <see cref="P:WpfAsyncPack.Base.ObservableTask.Exception"/>, <see cref="P:WpfAsyncPack.Base.ObservableTask.InnerException"/> and <see cref="P:WpfAsyncPack.Base.ObservableTask.ErrorMessage"/> properties.
+            </summary>
+            <value>
+            <c>true</c> if the task has been completed with a failure; <c>false</c> if it is not faulted or has not been observed yet.
+            </value>
+        </member>
+        <member name="P:WpfAsyncPack.Base.ObservableTask.Exception">
+            <summary>
+            Gets the aggregated faulting exceptions for the task.
+            </summary>
+            <value>
+            The aggregated faulting exceptions for the task. The value is <c>null</c> if task has been completed successfully or
+            has not been observed yet.
+            </value>
+        </member>
+        <member name="P:WpfAsyncPack.Base.ObservableTask.InnerException">
+            <summary>
+            Gets the original faulting exception for the task.
+            </summary>
+            <value>
+            The original faulting exception for the task. The value is <c>null</c> if task has been completed successfully or
+            has not been observed yet.
+            </value>
+        </member>
+        <member name="P:WpfAsyncPack.Base.ObservableTask.ErrorMessage">
+            <summary>
+            Gets the error message of the original faulting exception for the task.
+            </summary>
+            <value>
+            The error message of the original faulting exception for the task. The value is <c>null</c> if task has been completed
+            successfully or has not been observed yet.
+            </value>
+        </member>
+        <member name="M:WpfAsyncPack.Base.ObservableTask.Observe(System.Threading.Tasks.Task)">
+            <summary>
+            Observes the specified task and notifies about status changes and completion result.
+            </summary>
+            <param name="task">The task to be observed.</param>
+            <returns>The task-wrapper that does observation and notifies about changes.</returns>
+        </member>
+        <member name="T:WpfAsyncPack.Base.AsyncBindableBase">
+            <summary>
+            Provides asynchronous features to simplify implementation of classes bindable to the UI.
+            </summary>
+        </member>
+        <member name="E:WpfAsyncPack.Base.AsyncBindableBase.PropertyChanged">
+            <summary>
+            Occurs when a property value changes.
+            </summary>
+        </member>
+        <member name="M:WpfAsyncPack.Base.AsyncBindableBase.SetProperty``1(``0@,``0,System.String)">
+            <summary>
+            Sets the new property value and asynchronously notifies about the change. If the new value is equal to the current one, the
+            subscribers of the <see cref="E:System.ComponentModel.INotifyPropertyChanged.PropertyChanged"/> are not notified.
+            </summary>
+            <typeparam name="T">The type of the property value.</typeparam>
+            <param name="storage">The reference to the field that stores the property value.</param>
+            <param name="value">The new value to be set.</param>
+            <param name="propertyName">The name of the property. It is determined automatically on the compilation time if not set.</param>
+            <returns>
+            <c>true</c>, if the new value is different from the current one and it was changed; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:WpfAsyncPack.Base.AsyncBindableBase.RaisePropertyChangedAsync(System.String)">
+            <summary>
+            Raises the <see cref="E:WpfAsyncPack.Base.AsyncBindableBase.PropertyChanged"/> event that way so the subscribers are asynchronously invoked in the UI thread.
+            </summary>
+            <param name="propertyName">The name of the property. It is determined automatically on the compilation time if not set.</param>
+        </member>
+        <member name="M:WpfAsyncPack.Base.AsyncBindableBase.RaisePropertyChangedAsync(System.String[])">
+            <summary>
+            Raises the <see cref="E:WpfAsyncPack.Base.AsyncBindableBase.PropertyChanged"/> event that way so the subscribers are asynchronously invoked in the UI thread.
+            </summary>
+            <param name="propertyNames">The names of the properties.</param>
+        </member>
+        <member name="M:WpfAsyncPack.Base.AsyncBindableBase.InvokeInUiThreadAsync(System.Action)">
+            <summary>
+            Asynchronously invokes the method in the UI thread using the current application's <see cref="T:System.Windows.Threading.Dispatcher"/>.
+            </summary>
+            <param name="action">The method to be invoked in the UI thread.</param>
+            <returns>The task representing the method.</returns>
+        </member>
+        <member name="T:WpfAsyncPack.Command.AsyncCommand">
+            <summary>
+            An asynchronous delegate command that supports cancellation and provides bindable detailed information about execution completion.
+            </summary>
+        </member>
+        <member name="F:WpfAsyncPack.Command.AsyncCommand.ExecuteFunc">
+            <summary>
+            The function executed by the command.
+            </summary>
+        </member>
+        <member name="F:WpfAsyncPack.Command.AsyncCommand.CanExecuteFunc">
+            <summary>
+            The function that determines if command can be executed.
+            </summary>
+        </member>
+        <member name="E:WpfAsyncPack.Command.AsyncCommand.CanExecuteChanged">
+            <summary>
+            Occurs when changes occur that affect whether or not the command can be executed.
+            </summary>
+        </member>
+        <member name="M:WpfAsyncPack.Command.AsyncCommand.#ctor(System.Func{System.Object,System.Threading.CancellationToken,System.Threading.Tasks.Task},System.Func{System.Object,System.Boolean})">
+            <summary>
+            Initializes a new instance of the <see cref="T:WpfAsyncPack.Command.AsyncCommand"/> class.
+            </summary>
+            <param name="execute">The asynchronous method that accepts parameter and supports cancellation.</param>
+            <param name="canExecute">The method that determines whether the command can be executed in its current state or not.</param>
+        </member>
+        <member name="M:WpfAsyncPack.Command.AsyncCommand.#ctor(System.Func{System.Object,System.Threading.Tasks.Task},System.Func{System.Object,System.Boolean})">
+            <summary>
+            Initializes a new instance of the <see cref="T:WpfAsyncPack.Command.AsyncCommand"/> class.
+            </summary>
+            <param name="execute">The asynchronous method that accepts parameter.</param>
+            <param name="canExecute">The method that determines whether the command can be executed in its current state or not.</param>
+        </member>
+        <member name="M:WpfAsyncPack.Command.AsyncCommand.#ctor(System.Func{System.Threading.Tasks.Task},System.Func{System.Object,System.Boolean})">
+            <summary>
+            Initializes a new instance of the <see cref="T:WpfAsyncPack.Command.AsyncCommand"/> class.
+            </summary>
+            <param name="execute">The asynchronous method.</param>
+            <param name="canExecute">The method that determines whether the command can be executed in its current state or not.</param>
+        </member>
+        <member name="M:WpfAsyncPack.Command.AsyncCommand.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:WpfAsyncPack.Command.AsyncCommand"/> class. This constructor doesn't set the <see cref="F:WpfAsyncPack.Command.AsyncCommand.ExecuteFunc"/>
+            and <see cref="F:WpfAsyncPack.Command.AsyncCommand.CanExecuteFunc"/> functions. They should be set manually in the derived class before the command is executed.
+            </summary>
+        </member>
+        <member name="P:WpfAsyncPack.Command.AsyncCommand.Task">
+            <summary>
+            Gets the detailed information about the command task status and completion.
+            </summary>
+            <value>
+            The detailed information about the command task status and completion.
+            </value>
+        </member>
+        <member name="P:WpfAsyncPack.Command.AsyncCommand.CancelCommand">
+            <summary>
+            Defines the command that cancels execution of the <see cref="M:WpfAsyncPack.Command.AsyncCommand.ExecuteAsync(System.Object)"/> method.
+            </summary>
+            <value>
+            The cancellation command.
+            </value>
+        </member>
+        <member name="M:WpfAsyncPack.Command.AsyncCommand.Execute(System.Object)">
+            <summary>
+            Executes the command. Internally the execute will be executed asynchronously.
+            </summary>
+            <param name="parameter">Data used by the command.</param>
+        </member>
+        <member name="M:WpfAsyncPack.Command.AsyncCommand.ExecuteAsync(System.Object)">
+            <summary>
+            Asynchronously executes the command.
+            </summary>
+            <param name="parameter">Data used by the command.</param>
+        </member>
+        <member name="M:WpfAsyncPack.Command.AsyncCommand.CanExecute(System.Object)">
+            <summary>The method that determines whether the command can be executed in its current state or not.</summary>
+            <param name="parameter">
+            Data used by the command. If the execute does not require data to be passed, this object can be set to <c>null</c>.
+            </param>
+            <returns><c>true</c> if the command can be executed; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="T:WpfAsyncPack.Command.ProgressiveAsyncCommand`1">
+            <summary>
+            An asynchronous delegate command that supports <see cref="T:System.IProgress`1" />, cancellation and provides bindable detailed information
+            about execution completion.
+            </summary>
+            <typeparam name="TProgress">The type of the progress value.</typeparam>
+        </member>
+        <member name="M:WpfAsyncPack.Command.ProgressiveAsyncCommand`1.#ctor(System.Func{System.Object,System.Threading.CancellationToken,System.IProgress{`0},System.Threading.Tasks.Task},System.Action{`0},System.Func{System.Object,System.Boolean})">
+            <summary>
+            Initializes a new instance of the <see cref="T:WpfAsyncPack.Command.ProgressiveAsyncCommand`1"/> class.
+            </summary>
+            <param name="execute">
+            The asynchronous method that accepts parameter, an implementation of the <see cref="T:System.IProgress`1"/> to report
+            the progress change and supports cancellation.
+            </param>
+            <param name="progressHandler">The progress change handler.</param>
+            <param name="canExecute">The method that determines whether the command can be executed in its current state or not.</param>
+        </member>
+        <member name="M:WpfAsyncPack.Command.ProgressiveAsyncCommand`1.#ctor(System.Func{System.Object,System.IProgress{`0},System.Threading.Tasks.Task},System.Action{`0},System.Func{System.Object,System.Boolean})">
+            <summary>
+            Initializes a new instance of the <see cref="T:WpfAsyncPack.Command.ProgressiveAsyncCommand`1"/> class.
+            </summary>
+            <param name="execute">
+            The asynchronous method that accepts parameter and an implementation of the <see cref="T:System.IProgress`1"/> to report
+            the progress change.
+            </param>
+            <param name="progressHandler">The progress change handler.</param>
+            <param name="canExecute">The method that determines whether the command can be executed in its current state or not.</param>
+        </member>
+        <member name="M:WpfAsyncPack.Command.ProgressiveAsyncCommand`1.#ctor(System.Func{System.IProgress{`0},System.Threading.Tasks.Task},System.Action{`0},System.Func{System.Object,System.Boolean})">
+            <summary>
+            Initializes a new instance of the <see cref="T:WpfAsyncPack.Command.ProgressiveAsyncCommand`1"/> class.
+            </summary>
+            <param name="execute">
+            The asynchronous method that accepts an implementation of the <see cref="T:System.IProgress`1"/> to report the progress change.
+            </param>
+            <param name="progressHandler">The progress change handler.</param>
+            <param name="canExecute">The method that determines whether the command can be executed in its current state or not.</param>
+        </member>
+        <member name="T:WpfAsyncPack.Command.IAsyncCommand">
+            <summary>
+            Defines an asynchronous command that supports cancellation and provides detailed information about execution completion.
+            </summary>
+        </member>
+        <member name="M:WpfAsyncPack.Command.IAsyncCommand.ExecuteAsync(System.Object)">
+            <summary>Defines the asynchronous method to be called when the command is invoked.</summary>
+            <param name="parameter">Data used by the command.</param>
+        </member>
+        <member name="P:WpfAsyncPack.Command.IAsyncCommand.Task">
+            <summary>
+            Gets the detailed information about the command task status and completion.
+            </summary>
+            <value>
+            The detailed information about the command task status and completion.
+            </value>
+        </member>
+        <member name="P:WpfAsyncPack.Command.IAsyncCommand.CancelCommand">
+            <summary>
+            Defines the command that cancels execution of the <see cref="M:WpfAsyncPack.Command.IAsyncCommand.ExecuteAsync(System.Object)"/> method.
+            </summary>
+            <value>
+            The cancellation command.
+            </value>
+        </member>
+        <member name="T:WpfAsyncPack.Converters.BoolToVisibilityConverter">
+            <summary>
+            Converts a <see cref="T:System.Boolean"/> value to <see cref="T:System.Windows.Visibility"/> using the specified mapping of <see cref="T:System.Windows.Visibility"/> values.
+            </summary>
+        </member>
+        <member name="P:WpfAsyncPack.Converters.BoolToVisibilityConverter.TrueValue">
+            <summary>
+            Gets or sets the <see cref="T:System.Windows.Visibility"/> value that is used when the <see cref="T:System.Boolean"/> value is <c>true</c>.
+            </summary>
+            <value>
+            The <see cref="T:System.Windows.Visibility"/> value that is used when the <see cref="T:System.Boolean"/> value is <c>true</c>.
+            </value>
+        </member>
+        <member name="P:WpfAsyncPack.Converters.BoolToVisibilityConverter.FalseValue">
+            <summary>
+            Gets or sets the <see cref="T:System.Windows.Visibility"/> value that is used when the <see cref="T:System.Boolean"/> value is <c>false</c>.
+            </summary>
+            <value>
+            The <see cref="T:System.Windows.Visibility"/> value that is used when the <see cref="T:System.Boolean"/> value is <c>false</c>.
+            </value>
+        </member>
+        <member name="P:WpfAsyncPack.Converters.BoolToVisibilityConverter.Invert">
+            <summary>
+            Gets or sets a value indicating whether the <see cref="T:System.Boolean"/> value is inverted before converting to <see cref="T:System.Windows.Visibility"/>.
+            </summary>
+            <value>
+            <c>true</c> if the <see cref="T:System.Boolean"/> value is inverted; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="M:WpfAsyncPack.Converters.BoolToVisibilityConverter.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts a <see cref="T:System.Boolean"/> value to <see cref="T:System.Windows.Visibility"/>.
+            </summary>
+            <param name="value">The value produced by the binding source.</param>
+            <param name="targetType">The type of the binding target property.</param>
+            <param name="parameter">The converter parameter to use.</param>
+            <param name="culture">The culture to use in the converter.</param>
+            <returns>
+            A converted <see cref="T:System.Windows.Visibility"/> value.
+            </returns>
+        </member>
+        <member name="M:WpfAsyncPack.Converters.BoolToVisibilityConverter.ConvertBack(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            The conversion back is not supported and throws an <see cref="T:System.NotImplementedException"/> when invoked.
+            </summary>
+        </member>
+    </members>
+</doc>
