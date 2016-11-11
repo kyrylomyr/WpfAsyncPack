@@ -6,7 +6,7 @@ An asynchronous implementations of delegate command and other base common classe
 
 The idea of ```AsyncCommand``` implementation is based on the [articles](https://msdn.microsoft.com/en-us/magazine/dn630647.aspx) of Stephen Cleary's [blog](http://blog.stephencleary.com/) about async MVVM patterns.
 
-# Installation
+## Installation
 
 Th package is available through the NuGet by running the command
 
@@ -14,6 +14,6 @@ Th package is available through the NuGet by running the command
 PM> Install-Package WpfAsyncPack
 ```
 
-# Documentation
+## Documentation
 
 All information about the library and how to use it can be found in the [wiki](https://github.com/kirmir/WpfAsyncPack/wiki) and on my [blog](https://kirmir.com/).
