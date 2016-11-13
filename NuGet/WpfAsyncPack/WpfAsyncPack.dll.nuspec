@@ -3,16 +3,16 @@
   <metadata>
     <id>WpfAsyncPack</id>
     <title>WpfAsyncPack</title>
-    <version>1.4.0</version>
+    <version>1.5.0</version>
     <authors>Kyrylo Myroshnychenko</authors>
     <owners>Kyrylo Myroshnychenko</owners>
     <licenseUrl>https://github.com/kirmir/WpfAsyncPack/blob/master/LICENSE</licenseUrl>
     <projectUrl>https://github.com/kirmir/WpfAsyncPack</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>An async implementations of delegate command and other base common classes for WPF.</description>
-    <releaseNotes>Removed PropertyChangeNotifiable, AsyncUiBase and BaseViewModel, and implemented the same functionality as the AsyncBindableBase. Removed TaskCompletionNotifier and implemented ObservableTask instead. Implemented flexible BoolToVisibilityConverter. Updated the AsyncCommand internal implementation and constructors. Implemented ProgressiveAsyncCommand.</releaseNotes>
+    <releaseNotes>Implemented SyncCommand.</releaseNotes>
     <copyright>Copyright 2016</copyright>
-    <tags>wpf async asynchronous asynccommand delegatecommand baseviewmodel progress</tags>
+    <tags>wpf async asynchronous asynccommand synccommand delegatecommand baseviewmodel progress</tags>
   </metadata>
   <files>
     <file src="\lib\net46\WpfAsyncPack.dll" target="lib\net46\" />
