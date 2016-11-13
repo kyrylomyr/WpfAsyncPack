@@ -48,21 +48,5 @@ namespace WpfAsyncPack.Command
             : this((param, token, progress) => execute(param, progress), progressHandler, canExecute)
         {
         }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ProgressiveAsyncCommand{TProgress}"/> class.
-        /// </summary>
-        /// <param name="execute">
-        /// The asynchronous method that accepts an implementation of the <see cref="IProgress{TProgress}"/> to report the progress change.
-        /// </param>
-        /// <param name="progressHandler">The progress change handler.</param>
-        /// <param name="canExecute">The method that determines whether the command can be executed in its current state or not.</param>
-        public ProgressiveAsyncCommand(
-            Func<IProgress<TProgress>, Task> execute,
-            Action<TProgress> progressHandler,
-            Func<object, bool> canExecute = null)
-            : this((param, token, progress) => execute(progress), progressHandler, canExecute)
-        {
-        }
     }
 }

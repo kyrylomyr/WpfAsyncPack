@@ -36,7 +36,7 @@ namespace WpfAsyncPack.Command
         /// <summary>
         /// Initializes a new instance of the <see cref="AsyncCommand"/> class.
         /// </summary>
-        /// <param name="execute">The asynchronous method that accepts parameter and supports cancellation.</param>
+        /// <param name="execute">The asynchronous method with parameter and cancellation support. It is executed by the command.</param>
         /// <param name="canExecute">The method that determines whether the command can be executed in its current state or not.</param>
         public AsyncCommand(
             Func<object, CancellationToken, Task> execute,
@@ -49,24 +49,12 @@ namespace WpfAsyncPack.Command
         /// <summary>
         /// Initializes a new instance of the <see cref="AsyncCommand"/> class.
         /// </summary>
-        /// <param name="execute">The asynchronous method that accepts parameter.</param>
+        /// <param name="execute">The asynchronous method with parameter. It is executed by the command.</param>
         /// <param name="canExecute">The method that determines whether the command can be executed in its current state or not.</param>
         public AsyncCommand(
             Func<object, Task> execute,
             Func<object, bool> canExecute = null)
             : this((param, token) => execute(param), canExecute)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AsyncCommand"/> class.
-        /// </summary>
-        /// <param name="execute">The asynchronous method.</param>
-        /// <param name="canExecute">The method that determines whether the command can be executed in its current state or not.</param>
-        public AsyncCommand(
-            Func<Task> execute,
-            Func<object, bool> canExecute = null)
-            : this((param, token) => execute(), canExecute)
         {
         }
 
@@ -118,16 +106,17 @@ namespace WpfAsyncPack.Command
         }
 
         /// <summary>The method that determines whether the command can be executed in its current state or not.</summary>
-        /// <param name="parameter">
-        /// Data used by the command. If the execute does not require data to be passed, this object can be set to <c>null</c>.
-        /// </param>
+        /// <param name="parameter">Data used by the command.</param>
         /// <returns><c>true</c> if the command can be executed; otherwise, <c>false</c>.</returns>
-        public bool CanExecute(object parameter)
+        public bool CanExecute(object parameter = null)
         {
             return Task.IsNotRunning && (CanExecuteFunc == null || CanExecuteFunc(parameter));
         }
 
-        private static void RaiseCanExecuteChanged()
+        /// <summary>
+        /// Raises the <see cref="CanExecuteChanged"/> event notifying the command state was changed.
+        /// </summary>
+        protected static void RaiseCanExecuteChanged()
         {
             CommandManager.InvalidateRequerySuggested();
         }

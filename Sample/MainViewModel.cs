@@ -1,78 +1,88 @@
 ﻿using System;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using WpfAsyncPack.Base;
 using WpfAsyncPack.Command;
 
-namespace WeatherApp
+namespace FileCopyApp
 {
     internal class MainViewModel : AsyncBindableBase
     {
-        private readonly WeatherService _service;
+        private readonly FileService _fileService;
 
-        private int _temperature;
-        private int _wind;
-        private string _condition;
-        private int _updateWeatherProgress;
+        private string _sourcePath;
+        private string _targetPath;
+        private int _copyProgress;
+        private int _maxProgress;
+        private string _log;
 
-        public MainViewModel(WeatherService service)
+        public MainViewModel(FileService fileService)
         {
-            _service = service;
+            _fileService = fileService;
 
-            InitCommand = new AsyncCommand(
-                              async () =>
-                              {
-                                  // Some long-running initialization here.
-                                  await Task.Delay(new TimeSpan(0, 0, 10));
-                              });
+            SelectSourcePathCommand = new SyncCommand(p => { SourcePath = _fileService.SelectPath(); }, p => CopyCommand.Task.IsNotRunning);
+            SelectTargetPathCommand = new SyncCommand(p => { TargetPath = _fileService.SelectPath(); }, p => CopyCommand.Task.IsNotRunning);
 
-            GetWeatherCommand = new ProgressiveAsyncCommand<int>(
-                                    async progress =>
-                                    {
-                                        // Call of the long-running external service.
-                                        var weather = await _service.GetWeatherAsync(progress);
-
-                                        // Set the view model properties to display the result.
-                                        Temperature = weather.Temperature;
-                                        Wind = weather.Wind;
-                                        Condition = weather.Condition;
-                                    },
-                                    progressValue =>
-                                    {
-                                        UpdateWeatherProgress = progressValue;
-                                    },
-                                    _ => InitCommand.Task.IsNotRunning);
+            CopyCommand = new ProgressiveAsyncCommand<ProgressModel>(
+                async (parameter, token, progress) =>
+                      {
+                          Log = string.Empty;
+                          try
+                          {
+                              await _fileService.CopyFiles(SourcePath, TargetPath, progress, token);
+                          }
+                          catch (TaskCanceledException)
+                          {
+                              progress.Report(new ProgressModel("Cancelled."));
+                          }
+                      },
+                progress =>
+                {
+                    CopyProgress = progress.ProgressValue;
+                    MaxProgress = progress.MaxProgress;
+                    Log += $"{progress.LogMessage}{Environment.NewLine}";
+                },
+                parameter => _fileService.PathIsValid(SourcePath) && _fileService.PathIsValid(TargetPath));
         }
 
-        public MainViewModel() : this(new WeatherService())
+        public MainViewModel() : this(new FileService())
         {
         }
 
-        public int Temperature
+        public string SourcePath
         {
-            get { return _temperature; }
-            set { SetProperty(ref _temperature, value); }
+            get { return _sourcePath; }
+            set { SetProperty(ref _sourcePath, value); }
         }
 
-        public int Wind
+        public ICommand SelectSourcePathCommand { get; }
+
+        public string TargetPath
         {
-            get { return _wind; }
-            set { SetProperty(ref _wind, value); }
+            get { return _targetPath; }
+            set { SetProperty(ref _targetPath, value); }
         }
 
-        public string Condition
+        public ICommand SelectTargetPathCommand { get; }
+
+        public IAsyncCommand CopyCommand { get; }
+
+        public int CopyProgress
         {
-            get { return _condition; }
-            set { SetProperty(ref _condition, value); }
+            get { return _copyProgress; }
+            set { SetProperty(ref _copyProgress, value); }
         }
 
-        public int UpdateWeatherProgress
+        public int MaxProgress
         {
-            get { return _updateWeatherProgress; }
-            set { SetProperty(ref _updateWeatherProgress, value); }
+            get { return _maxProgress; }
+            set { SetProperty(ref _maxProgress, value); }
         }
 
-        public IAsyncCommand InitCommand { get; }
-
-        public IAsyncCommand GetWeatherCommand { get; }
+        public string Log
+        {
+            get { return _log; }
+            set { SetProperty(ref _log, value); }
+        }
     }
 }

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WeatherApp.Properties
+namespace FileCopyApp.Properties
 {
 
 

@@ -1,72 +1,82 @@
-﻿<Window
-  x:Class="WeatherApp.MainWindow"
-  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-  xmlns:app="clr-namespace:WeatherApp"
-  xmlns:c="clr-namespace:WpfAsyncPack.Converters;assembly=WpfAsyncPack"
-  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-  Title="WeatherApp (sample of usage WpfAsyncPack)"
-  Width="525"
-  Height="350"
-  d:DataContext="{d:DesignInstance app:MainViewModel}"
-  Loaded="MainWindow_OnLoaded"
-  mc:Ignorable="d">
+﻿<Window x:Class="FileCopyApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:app="clr-namespace:FileCopyApp"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        Title="FileCopyApp"
+        Width="525"
+        Height="350"
+        d:DataContext="{d:DesignInstance app:MainViewModel}"
+        Loaded="MainWindow_OnLoaded"
+        mc:Ignorable="d">
   <Window.Resources>
-    <c:BoolToVisibilityConverter x:Key="BoolToVisConv" />
-    <Style TargetType="TextBlock">
-      <Setter Property="Margin" Value="10,0" />
+    <Style TargetType="Button">
+      <Setter Property="Padding" Value="8,3" />
+      <Setter Property="Margin" Value="1" />
     </Style>
-    <Style TargetType="ProgressBar">
-      <Setter Property="Margin" Value="10,5" />
+    <Style TargetType="TextBox">
+      <Setter Property="Margin" Value="1" />
     </Style>
   </Window.Resources>
-  <Grid Margin="0,10">
-    <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="Auto" />
-      <ColumnDefinition Width="*" />
-    </Grid.ColumnDefinitions>
+  <Grid Margin="10">
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto" />
       <RowDefinition Height="Auto" />
       <RowDefinition Height="Auto" />
       <RowDefinition Height="Auto" />
       <RowDefinition Height="Auto" />
+      <RowDefinition Height="10" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="10" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="10" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
     </Grid.RowDefinitions>
-    <TextBlock
-      Grid.Row="0"
-      Grid.Column="0"
-      Grid.ColumnSpan="2"
-      Visibility="{Binding InitCommand.Task.IsRunning, Converter={StaticResource BoolToVisConv}}">
-      Initialization...
+    <TextBlock Grid.Row="0"
+               FontSize="10"
+               FontStyle="Italic"
+               TextWrapping="Wrap">
+      This is just a sample project. The app doesn't really copy any files. It uses the fake list of file names and simulates delay. Just enter any valid paths.
     </TextBlock>
-    <TextBlock Grid.Row="1" Grid.Column="0">Temperature:</TextBlock>
-    <TextBlock
-      Grid.Row="1"
-      Grid.Column="1"
-      Text="{Binding Temperature}" />
-    <TextBlock Grid.Row="2" Grid.Column="0">Wind:</TextBlock>
-    <TextBlock
-      Grid.Row="2"
-      Grid.Column="1"
-      Text="{Binding Wind}" />
-    <TextBlock Grid.Row="3" Grid.Column="0">Condition:</TextBlock>
-    <TextBlock
-      Grid.Row="3"
-      Grid.Column="1"
-      Text="{Binding Condition}" />
-    <ProgressBar
-      Grid.Row="4"
-      Grid.Column="0"
-      Maximum="3"
-      Visibility="{Binding GetWeatherCommand.Task.IsRunning, Converter={StaticResource BoolToVisConv}}"
-      Value="{Binding UpdateWeatherProgress}" />
-    <Button
-      Grid.Row="4"
-      Grid.Column="1"
-      HorizontalAlignment="Left"
-      Command="{Binding GetWeatherCommand}">
-      Update weather
-    </Button>
+    <TextBlock Grid.Row="1">Source path:</TextBlock>
+    <Grid Grid.Row="2">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*" />
+        <ColumnDefinition Width="Auto" />
+      </Grid.ColumnDefinitions>
+      <TextBox Grid.Column="0"
+               IsReadOnly="{Binding CopyCommand.Task.IsRunning}"
+               Text="{Binding SourcePath}" />
+      <Button Grid.Column="1" Command="{Binding SelectSourcePathCommand}">...</Button>
+    </Grid>
+    <TextBlock Grid.Row="3">Target path:</TextBlock>
+    <Grid Grid.Row="4">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*" />
+        <ColumnDefinition Width="Auto" />
+      </Grid.ColumnDefinitions>
+      <TextBox Grid.Column="0"
+               IsReadOnly="{Binding CopyCommand.Task.IsRunning}"
+               Text="{Binding TargetPath}" />
+      <Button Grid.Column="1" Command="{Binding SelectTargetPathCommand}">...</Button>
+    </Grid>
+    <StackPanel Grid.Row="6"
+                HorizontalAlignment="Center"
+                Orientation="Horizontal">
+      <Button Command="{Binding CopyCommand}">Copy</Button>
+      <Button Command="{Binding CopyCommand.CancelCommand}">Cancel</Button>
+    </StackPanel>
+    <ProgressBar Grid.Row="8"
+                 Height="15"
+                 Maximum="{Binding MaxProgress}"
+                 Value="{Binding CopyProgress}" />
+    <TextBlock Grid.Row="10">Log:</TextBlock>
+    <TextBox Grid.Row="11"
+             IsReadOnly="True"
+             Text="{Binding Log}"
+             TextWrapping="Wrap"
+             VerticalScrollBarVisibility="Auto" />
   </Grid>
 </Window>

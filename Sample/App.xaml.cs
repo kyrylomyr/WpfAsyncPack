@@ -1,4 +1,4 @@
-﻿namespace WeatherApp
+﻿namespace FileCopyApp
 {
     public partial class App
     {
