@@ -1,0 +1,1 @@
+build.cmd /p:SignAssembly=True /p:AssemblyOriginatorKeyFile=..\WpfAsyncPack.snk /p:OutputPath=bin\ReleaseStrongTyped\ %*
