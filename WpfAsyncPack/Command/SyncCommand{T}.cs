@@ -24,15 +24,17 @@ namespace WpfAsyncPack.Command
         /// </summary>
         public event EventHandler CanExecuteChanged
         {
-            add { CommandManager.RequerySuggested += value; }
-            remove { CommandManager.RequerySuggested -= value; }
+            add => CommandManager.RequerySuggested += value;
+            remove => CommandManager.RequerySuggested -= value;
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SyncCommand{T}"/> class.
         /// </summary>
         /// <param name="execute">The method with parameter. It is executed by the command.</param>
-        /// <param name="canExecute">The method that determines whether the command can be executed in its current state or not.</param>
+        /// <param name="canExecute">
+        /// The method that determines whether the command can be executed in its current state or not.
+        /// </param>
         public SyncCommand(
             Action<T> execute,
             Func<T, bool> canExecute = null)
@@ -42,8 +44,9 @@ namespace WpfAsyncPack.Command
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SyncCommand{T}"/> class. This constructor doesn't set the <see cref="ExecuteAction"/>
-        /// and <see cref="CanExecuteFunc"/>. They should be set manually in the derived class before the command is executed.
+        /// Initializes a new instance of the <see cref="SyncCommand{T}"/> class. This constructor doesn't set
+        /// the <see cref="ExecuteAction"/> and <see cref="CanExecuteFunc"/>. They should be set manually in the
+        /// derived class before the command is executed.
         /// </summary>
         protected SyncCommand()
         {

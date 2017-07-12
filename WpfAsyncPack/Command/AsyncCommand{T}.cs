@@ -8,7 +8,8 @@ using WpfAsyncPack.Internal;
 namespace WpfAsyncPack.Command
 {
     /// <summary>
-    /// An asynchronous delegate command that supports cancellation and provides bindable detailed information about execution completion.
+    /// An asynchronous delegate command that supports cancellation and provides bindable detailed information
+    /// about execution completion.
     /// </summary>
     /// <typeparam name="T">The type of element used by command.</typeparam>
     public class AsyncCommand<T> : AsyncBindableBase, IAsyncCommand<T>
@@ -30,15 +31,19 @@ namespace WpfAsyncPack.Command
         /// </summary>
         public event EventHandler CanExecuteChanged
         {
-            add { CommandManager.RequerySuggested += value; }
-            remove { CommandManager.RequerySuggested -= value; }
+            add => CommandManager.RequerySuggested += value;
+            remove => CommandManager.RequerySuggested -= value;
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AsyncCommand{T}"/> class.
         /// </summary>
-        /// <param name="execute">The asynchronous method with parameter and cancellation support. It is executed by the command.</param>
-        /// <param name="canExecute">The method that determines whether the command can be executed in its current state or not.</param>
+        /// <param name="execute">
+        /// The asynchronous method with parameter and cancellation support. It is executed by the command.
+        /// </param>
+        /// <param name="canExecute">
+        /// The method that determines whether the command can be executed in its current state or not.
+        /// </param>
         public AsyncCommand(
             Func<T, CancellationToken, Task> execute,
             Func<T, bool> canExecute = null)
@@ -51,7 +56,9 @@ namespace WpfAsyncPack.Command
         /// Initializes a new instance of the <see cref="AsyncCommand{T}"/> class.
         /// </summary>
         /// <param name="execute">The asynchronous method with parameter. It is executed by the command.</param>
-        /// <param name="canExecute">The method that determines whether the command can be executed in its current state or not.</param>
+        /// <param name="canExecute">
+        /// The method that determines whether the command can be executed in its current state or not.
+        /// </param>
         public AsyncCommand(
             Func<T, Task> execute,
             Func<T, bool> canExecute = null)
@@ -60,8 +67,9 @@ namespace WpfAsyncPack.Command
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AsyncCommand{T}"/> class. This constructor doesn't set the <see cref="ExecuteFunc"/>
-        /// and <see cref="CanExecuteFunc"/> functions. They should be set manually in the derived class before the command is executed.
+        /// Initializes a new instance of the <see cref="AsyncCommand{T}"/> class. This constructor doesn't set
+        /// the <see cref="ExecuteFunc"/> and <see cref="CanExecuteFunc"/> functions. They should be set manually
+        /// in the derived class before the command is executed.
         /// </summary>
         protected AsyncCommand()
         {
