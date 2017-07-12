@@ -48,14 +48,16 @@
     <Compile Include="Base\ObservableTask.cs" />
     <Compile Include="Command\AsyncCommand.cs" />
     <Compile Include="Base\AsyncBindableBase.cs" />
+    <Compile Include="Command\AsyncCommand{T}.cs" />
+    <Compile Include="Command\IAsyncCommand{T}.cs" />
     <Compile Include="Command\ProgressiveAsyncCommand.cs" />
     <Compile Include="Command\SyncCommand.cs" />
+    <Compile Include="Command\SyncCommand{T}.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Internal\CancelAsyncCommand.cs" />
     <Compile Include="Command\IAsyncCommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
