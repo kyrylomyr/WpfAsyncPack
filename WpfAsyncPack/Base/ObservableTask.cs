@@ -68,17 +68,18 @@ namespace WpfAsyncPack.Base
         /// Gets a value indicating whether the task has been completed successfully without exceptions.
         /// </summary>
         /// <value>
-        /// <c>true</c> if the task has been completed successfully; <c>false</c> if the task has been completed with an exception,
-        /// or has not been observed yet.
+        /// <c>true</c> if the task has been completed successfully; <c>false</c> if the task has been completed
+        /// with an exception, or has not been observed yet.
         /// </value>
         public bool IsSuccessfullyCompleted => Task != null && Task.Status == TaskStatus.RanToCompletion;
 
         /// <summary>
-        /// Gets a value indicating whether the task has been completed with a failure. The failure details are contained in the
-        /// <see cref="Exception"/>, <see cref="InnerException"/> and <see cref="ErrorMessage"/> properties.
+        /// Gets a value indicating whether the task has been completed with a failure. The failure details are contained
+        /// in the <see cref="Exception"/>, <see cref="InnerException"/> and <see cref="ErrorMessage"/> properties.
         /// </summary>
         /// <value>
-        /// <c>true</c> if the task has been completed with a failure; <c>false</c> if it is not faulted or has not been observed yet.
+        /// <c>true</c> if the task has been completed with a failure; <c>false</c> if it is not faulted or
+        /// has not been observed yet.
         /// </value>
         public bool IsFaulted => Task?.IsFaulted ?? false;
 
@@ -86,8 +87,8 @@ namespace WpfAsyncPack.Base
         /// Gets the aggregated faulting exceptions for the task.
         /// </summary>
         /// <value>
-        /// The aggregated faulting exceptions for the task. The value is <c>null</c> if task has been completed successfully or
-        /// has not been observed yet.
+        /// The aggregated faulting exceptions for the task. The value is <c>null</c> if task has been completed
+        /// successfully or has not been observed yet.
         /// </value>
         public AggregateException Exception => Task?.Exception;
 
@@ -95,8 +96,8 @@ namespace WpfAsyncPack.Base
         /// Gets the original faulting exception for the task.
         /// </summary>
         /// <value>
-        /// The original faulting exception for the task. The value is <c>null</c> if task has been completed successfully or
-        /// has not been observed yet.
+        /// The original faulting exception for the task. The value is <c>null</c> if task has been completed
+        /// successfully or has not been observed yet.
         /// </value>
         public Exception InnerException => Exception?.InnerException;
 
@@ -104,8 +105,8 @@ namespace WpfAsyncPack.Base
         /// Gets the error message of the original faulting exception for the task.
         /// </summary>
         /// <value>
-        /// The error message of the original faulting exception for the task. The value is <c>null</c> if task has been completed
-        /// successfully or has not been observed yet.
+        /// The error message of the original faulting exception for the task. The value is <c>null</c> if task
+        /// has been completed successfully or has not been observed yet.
         /// </value>
         public string ErrorMessage => InnerException?.Message;
 

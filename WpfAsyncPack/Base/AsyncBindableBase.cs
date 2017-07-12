@@ -21,13 +21,15 @@ namespace WpfAsyncPack.Base
         public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
-        /// Sets the new property value and asynchronously notifies about the change. If the new value is equal to the current one, the
-        /// subscribers of the <see cref="INotifyPropertyChanged.PropertyChanged"/> are not notified.
+        /// Sets the new property value and asynchronously notifies about the change. If the new value is equal to the
+        /// current one, the subscribers of the <see cref="INotifyPropertyChanged.PropertyChanged"/> are not notified.
         /// </summary>
         /// <typeparam name="T">The type of the property value.</typeparam>
         /// <param name="storage">The reference to the field that stores the property value.</param>
         /// <param name="value">The new value to be set.</param>
-        /// <param name="propertyName">The name of the property. It is determined automatically on the compilation time if not set.</param>
+        /// <param name="propertyName">
+        /// The name of the property. It is determined automatically on the compilation time if not set.
+        /// </param>
         /// <returns>
         /// <c>true</c>, if the new value is different from the current one and it was changed; otherwise, <c>false</c>.
         /// </returns>
@@ -47,20 +49,25 @@ namespace WpfAsyncPack.Base
         }
 
         /// <summary>
-        /// Raises the <see cref="PropertyChanged"/> event that way so the subscribers are asynchronously invoked in the UI thread.
+        /// Raises the <see cref="PropertyChanged"/> event that way so the subscribers are asynchronously invoked
+        /// in the UI thread.
         /// </summary>
-        /// <param name="propertyName">The name of the property. It is determined automatically on the compilation time if not set.</param>
+        /// <param name="propertyName">
+        /// The name of the property. It is determined automatically on the compilation time if not set.
+        /// </param>
         protected virtual async void RaisePropertyChangedAsync([CallerMemberName] string propertyName = "")
         {
             var propertyChanged = PropertyChanged;
             if (propertyChanged != null)
             {
-                await InvokeInUiThreadAsync(() => propertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName)));
+                await InvokeInUiThreadAsync(
+                    () => propertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName)));
             }
         }
 
         /// <summary>
-        /// Raises the <see cref="PropertyChanged"/> event that way so the subscribers are asynchronously invoked in the UI thread.
+        /// Raises the <see cref="PropertyChanged"/> event that way so the subscribers are asynchronously invoked
+        /// in the UI thread.
         /// </summary>
         /// <param name="propertyNames">The names of the properties.</param>
         protected virtual async void RaisePropertyChangedAsync(params string[] propertyNames)
@@ -75,7 +82,8 @@ namespace WpfAsyncPack.Base
             {
                 foreach (var propertyName in propertyNames.AsParallel())
                 {
-                    await InvokeInUiThreadAsync(() => propertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName)));
+                    await InvokeInUiThreadAsync(
+                        () => propertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName)));
                 }
             }
         }
