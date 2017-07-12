@@ -31,7 +31,7 @@ namespace WpfAsyncPack.Base
         /// <returns>
         /// <c>true</c>, if the new value is different from the current one and it was changed; otherwise, <c>false</c>.
         /// </returns>
-        protected bool SetProperty<T>(ref T storage, T value, [CallerMemberName] string propertyName = "")
+        protected virtual bool SetProperty<T>(ref T storage, T value, [CallerMemberName] string propertyName = "")
         {
             if (Equals(storage, value))
             {
