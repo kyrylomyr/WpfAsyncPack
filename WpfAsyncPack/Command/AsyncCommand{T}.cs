@@ -31,8 +31,8 @@ namespace WpfAsyncPack.Command
         /// </summary>
         public event EventHandler CanExecuteChanged
         {
-            add => CommandManager.RequerySuggested += value;
-            remove => CommandManager.RequerySuggested -= value;
+            add { CommandManager.RequerySuggested += value; }
+            remove { CommandManager.RequerySuggested -= value; }
         }
 
         /// <summary>
@@ -101,6 +101,15 @@ namespace WpfAsyncPack.Command
         }
 
         /// <summary>
+        /// Executes the command. Internally the execute will be executed asynchronously.
+        /// </summary>
+        /// <param name="parameter">Data used by the command.</param>
+        public async void Execute(object parameter = null)
+        {
+            await ExecuteAsync((T)parameter );
+        }
+
+        /// <summary>
         /// Asynchronously executes the command.
         /// </summary>
         /// <param name="parameter">Data used by the command.</param>
@@ -133,11 +142,6 @@ namespace WpfAsyncPack.Command
         bool ICommand.CanExecute(object parameter)
         {
             return CanExecute((T)parameter);
-        }
-
-        void ICommand.Execute(object parameter)
-        {
-            Execute((T)parameter);
         }
     }
 }
