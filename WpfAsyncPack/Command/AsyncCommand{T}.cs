@@ -106,7 +106,7 @@ namespace WpfAsyncPack.Command
         /// <param name="parameter">Data used by the command.</param>
         public async void Execute(object parameter = null)
         {
-            await ExecuteAsync((T)parameter );
+            await ExecuteAsync((T)parameter);
         }
 
         /// <summary>
@@ -131,17 +131,17 @@ namespace WpfAsyncPack.Command
             return Task.IsNotRunning && (CanExecuteFunc == null || CanExecuteFunc(parameter));
         }
 
+        public bool CanExecute(object parameter)
+        {
+            return CanExecute((T)parameter);
+        }
+
         /// <summary>
         /// Raises the <see cref="CanExecuteChanged"/> event notifying the command state was changed.
         /// </summary>
         protected static void RaiseCanExecuteChanged()
         {
             CommandManager.InvalidateRequerySuggested();
-        }
-
-        bool ICommand.CanExecute(object parameter)
-        {
-            return CanExecute((T)parameter);
         }
     }
 }
